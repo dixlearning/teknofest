@@ -9,11 +9,26 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   final List<String> words = [
-    '', 'bitki', 'börek', 'değirmen',
-    'peynir', 'dünya', 'boncuk', 'papatya',
-    'bardak', 'baston', 'balon', 'palto',
-    'bilye', 'pamuk', 'defter', 'priz',
-    'başlık', 'bütün', 'balık', ''
+    '',
+    'bitki',
+    'börek',
+    'değirmen',
+    'peynir',
+    'dünya',
+    'boncuk',
+    'papatya',
+    'bardak',
+    'baston',
+    'balon',
+    'palto',
+    'bilye',
+    'pamuk',
+    'defter',
+    'priz',
+    'başlık',
+    'bütün',
+    'balık',
+    ''
   ];
 
   final List<bool> isCorrect = List<bool>.filled(20, false);
@@ -24,7 +39,8 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   void initState() {
     super.initState();
-    _highlightNextWords(start: true); // Oyunun başlangıcında sadece "bitki" seçilebilir
+    _highlightNextWords(
+        start: true); // Oyunun başlangıcında sadece "bitki" seçilebilir
   }
 
   void _highlightNextWords({bool start = false}) {
@@ -54,7 +70,8 @@ class _HomeScreenState extends State<HomeScreen> {
         isWrong[i] = false;
       }
       currentIndex = 1;
-      _highlightNextWords(start: true); // Yeniden başlarken sadece "bitki" seçilebilir
+      _highlightNextWords(
+          start: true); // Yeniden başlarken sadece "bitki" seçilebilir
     });
   }
 
@@ -82,9 +99,11 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.lightGreen[300], // Arka plan rengini açık yeşil yaptım
+      backgroundColor:
+          Colors.lightGreen[300], // Arka plan rengini açık yeşil yaptım
       appBar: AppBar(
-        backgroundColor: Colors.lightGreen[600], // Başlığın arka plan rengini koyu yeşil yaptım
+        backgroundColor: Colors
+            .lightGreen[600], // Başlığın arka plan rengini koyu yeşil yaptım
         title: const Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -96,7 +115,8 @@ class _HomeScreenState extends State<HomeScreen> {
                 '"b" harfiyle başlayan kelimeleri takip ederek tavuğu yeme götürün.',
                 style: TextStyle(fontSize: 12), // Yazı boyutunu biraz küçülttüm
                 textAlign: TextAlign.center,
-                softWrap: true, // Metnin ekranın genişliğine göre sarılmasını sağlar
+                softWrap:
+                    true, // Metnin ekranın genişliğine göre sarılmasını sağlar
               ),
             ),
           ],
@@ -116,45 +136,47 @@ class _HomeScreenState extends State<HomeScreen> {
                 return Container(
                   margin: const EdgeInsets.all(5),
                   color: Colors.grey[300],
-                  child: Image.asset('assets/images/tavukk.png'), // Tavuk resmi
+                  child: Image.asset(
+                      'assets/images/disleksi2_img/tavuk1.jpg'), // Tavuk resmi
                 );
               } else if (index == 19) {
                 return Container(
                   margin: const EdgeInsets.all(2),
                   color: Colors.grey[300],
-                  child: Image.asset('assets/images/yemm.png'), // Yem resmi
+                  child: Image.asset(
+                      'assets/images/disleksi2_img/yem.jpg'), // Yem resmi
                 );
               } else {
                 return GestureDetector(
                   onTap: isNext[index]
                       ? () {
-                    setState(() {
-                      if (words[index].startsWith('b')) {
-                        isCorrect[index] = true;
-                        isWrong[index] = false;
-                        currentIndex = index;
-                        _highlightNextWords();
-                      } else {
-                        isWrong[index] = true;
-                        isCorrect[index] = false;
-                        _showTryAgainDialog();
-                      }
+                          setState(() {
+                            if (words[index].startsWith('b')) {
+                              isCorrect[index] = true;
+                              isWrong[index] = false;
+                              currentIndex = index;
+                              _highlightNextWords();
+                            } else {
+                              isWrong[index] = true;
+                              isCorrect[index] = false;
+                              _showTryAgainDialog();
+                            }
 
-                      if (words[index] == 'balık') {
-                        _showEndDialog();
-                      }
-                    });
-                  }
+                            if (words[index] == 'balık') {
+                              _showEndDialog();
+                            }
+                          });
+                        }
                       : null,
                   child: Container(
                     margin: const EdgeInsets.all(2),
                     color: isCorrect[index]
                         ? Colors.lightGreen
                         : isWrong[index]
-                        ? Colors.red
-                        : isNext[index]
-                        ? Colors.blue
-                        : Colors.grey[300],
+                            ? Colors.red
+                            : isNext[index]
+                                ? Colors.blue
+                                : Colors.grey[300],
                     child: Center(
                       child: Text(
                         words[index],
