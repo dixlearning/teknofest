@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 
-
 class Disleksi4 extends StatelessWidget {
   final TextEditingController _controller = TextEditingController();
-  final String correctText = "dandini dandini danalı bebek elleri kolları kınalı bebek benim oğlum nazlı bebek";
+  final String correctText =
+      "dandini dandini danalı bebek elleri kolları kınalı bebek benim oğlum nazlı bebek";
 
   Disleksi4({super.key});
 
@@ -121,22 +121,27 @@ class Disleksi4 extends StatelessWidget {
   }
 
   void _checkText(BuildContext context) {
-    String userInput = _controller.text.trim();
+    String userInput = _controller.text.trim().toLowerCase();
+    String lowerCorrectText = correctText.toLowerCase();
+
     List<String> userWords = userInput.split(' ');
-    List<String> correctWords = correctText.split(' ');
+    List<String> correctWords = lowerCorrectText.split(' ');
 
     if (userWords.length < 12) {
-      _showAlert(context, 'Eksik kelime girdiniz. Lütfen 12 kelime girdiğinize emin olunuz.');
+      _showAlert(context,
+          'Eksik kelime girdiniz. Lütfen 12 kelime girdiğinize emin olunuz.');
       return;
-    }
-    else if (userWords.length > 12) {
-      _showAlert(context, 'Fazla kelime girdiniz. Lütfen 12 kelime girdiğinize emin olunuz.');
+    } else if (userWords.length > 12) {
+      _showAlert(context,
+          'Fazla kelime girdiniz. Lütfen 12 kelime girdiğinize emin olunuz.');
       return;
     }
 
     List<TextSpan> resultText = [];
 
-    int minLength = userWords.length < correctWords.length ? userWords.length : correctWords.length;
+    int minLength = userWords.length < correctWords.length
+        ? userWords.length
+        : correctWords.length;
 
     for (int i = 0; i < minLength; i++) {
       String userWord = userWords[i];
