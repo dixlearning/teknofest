@@ -68,7 +68,7 @@ flutter:
     - assets/images/mat_hesaplama_img/
     - assets/images/sayi_oyunu_img/
     - assets/images/secenekli_oyun_img/
-  #   - images/a_dot_ham.jpeg
+    - assets/images/disleksi2_img/
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images
