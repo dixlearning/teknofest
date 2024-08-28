@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-
-
 class PuzzleGameScreen extends StatefulWidget {
   const PuzzleGameScreen({super.key});
 
@@ -24,26 +22,30 @@ class _PuzzleGameScreenState extends State<PuzzleGameScreen> {
   @override
   void initState() {
     super.initState();
-    boxColors = List.generate(rows.length, (_) => List.generate(10, (_) => Colors.white));
+    boxColors = List.generate(
+        rows.length, (_) => List.generate(10, (_) => Colors.white));
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Puzzle Game'),
+        title: const Text('Kayıp Rakamları Bulalım!'),
       ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16.0),
         child: Column(
           children: [
             const Text(
-              'Kutularda eksik bırakılan rakamı doldurun ve 0\'dan 9\'a kadar sıralayınız.',
-              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+              'Her satırı 0\'dan 9\'a kadar yerleştirelim. Eksik bırakılan rakamları boş kutulara dolduralım.',
+              style: TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                  color: Color.fromARGB(255, 18, 46, 202)),
               textAlign: TextAlign.center,
             ),
             const SizedBox(height: 20),
-            for (int i = 0; i < rows.length; i++)
+            for (int i = 0; i < rows.length; i++) ...[
               Row(
                 children: [
                   for (int j = 0; j < rows[i].length; j++)
@@ -76,40 +78,43 @@ class _PuzzleGameScreenState extends State<PuzzleGameScreen> {
                               return Center(
                                 child: rows[i][j] == null
                                     ? TextField(
-                                  textAlign: TextAlign.center,
-                                  keyboardType: TextInputType.number,
-                                  inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-                                  onChanged: (value) {
-                                    if (value.isNotEmpty) {
-                                      int? number = int.tryParse(value);
-                                      setState(() {
-                                        rows[i][j] = number;
-                                      });
-                                    }
-                                  },
-                                )
+                                        textAlign: TextAlign.center,
+                                        keyboardType: TextInputType.number,
+                                        inputFormatters: [
+                                          FilteringTextInputFormatter.digitsOnly
+                                        ],
+                                        onChanged: (value) {
+                                          if (value.isNotEmpty) {
+                                            int? number = int.tryParse(value);
+                                            setState(() {
+                                              rows[i][j] = number;
+                                            });
+                                          }
+                                        },
+                                      )
                                     : Draggable<int>(
-                                  data: rows[i][j]!,
-                                  feedback: Material(
-                                    color: Colors.transparent,
-                                    child: Container(
-                                      height: 50,
-                                      width: 50,
-                                      color: Colors.blue,
-                                      child: Center(
+                                        data: rows[i][j]!,
+                                        feedback: Material(
+                                          color: Colors.transparent,
+                                          child: Container(
+                                            height: 50,
+                                            width: 50,
+                                            color: Colors.blue,
+                                            child: Center(
+                                              child: Text(
+                                                '${rows[i][j]}',
+                                                style: const TextStyle(
+                                                    color: Colors.white),
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                        childWhenDragging: Container(),
                                         child: Text(
                                           '${rows[i][j]}',
-                                          style: const TextStyle(color: Colors.white),
+                                          style: const TextStyle(fontSize: 20),
                                         ),
                                       ),
-                                    ),
-                                  ),
-                                  childWhenDragging: Container(),
-                                  child: Text(
-                                    '${rows[i][j]}',
-                                    style: const TextStyle(fontSize: 20),
-                                  ),
-                                ),
                               );
                             },
                           ),
@@ -118,10 +123,16 @@ class _PuzzleGameScreenState extends State<PuzzleGameScreen> {
                     ),
                 ],
               ),
-            const SizedBox(height: 20),
+              const SizedBox(height: 20), // Satırlar arasında boşluk
+            ],
             ElevatedButton(
               onPressed: _checkResults,
               child: const Text('Kontrol Et'),
+            ),
+            const SizedBox(height: 10),
+            ElevatedButton(
+              onPressed: _retryIncorrectRows,
+              child: const Text('Tekrar Dene'),
             ),
           ],
         ),
@@ -133,7 +144,9 @@ class _PuzzleGameScreenState extends State<PuzzleGameScreen> {
     setState(() {
       for (int i = 0; i < rows.length; i++) {
         bool correct = true;
-        List<int> sortedRow = List<int>.from(rows[i].where((item) => item != null).cast<int>())..sort();
+        List<int> sortedRow =
+            List<int>.from(rows[i].where((item) => item != null).cast<int>())
+              ..sort();
         for (int j = 0; j < sortedRow.length; j++) {
           if (sortedRow[j] != j) {
             correct = false;
@@ -142,6 +155,29 @@ class _PuzzleGameScreenState extends State<PuzzleGameScreen> {
         }
         for (int j = 0; j < rows[i].length; j++) {
           boxColors[i][j] = correct ? Colors.green : Colors.red;
+        }
+      }
+    });
+  }
+
+  void _retryIncorrectRows() {
+    setState(() {
+      for (int i = 0; i < rows.length; i++) {
+        bool correct = true;
+        List<int> sortedRow =
+            List<int>.from(rows[i].where((item) => item != null).cast<int>())
+              ..sort();
+        for (int j = 0; j < sortedRow.length; j++) {
+          if (sortedRow[j] != j) {
+            correct = false;
+            break;
+          }
+        }
+        if (!correct) {
+          for (int j = 0; j < rows[i].length; j++) {
+            rows[i][j] = null; // Yanlış satırları sıfırla
+            boxColors[i][j] = Colors.white; // Renkleri sıfırla
+          }
         }
       }
     });
