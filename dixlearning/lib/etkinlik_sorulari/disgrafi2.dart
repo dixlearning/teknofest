@@ -25,7 +25,7 @@ class _KarisikAylarState extends State<KarisikAylar> {
     'ARALIK'
   ];
 
-  final List<String> karisikAylar = [];
+  List<String> karisikAylar = [];
   final List<TextEditingController> controllers = [];
   String mesaj = '';
   bool hataVarMi = false;
@@ -37,6 +37,7 @@ class _KarisikAylarState extends State<KarisikAylar> {
   }
 
   void generateKarisikAylar() {
+    aylar.shuffle(); // Ayların sırasını karıştır
     karisikAylar.clear();
     controllers.clear();
     for (var ay in aylar) {
@@ -70,12 +71,21 @@ class _KarisikAylarState extends State<KarisikAylar> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Karışık Aylar'),
+        title: const Text('Ayları Düzenleyelim!'),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
           children: [
+            const Text(
+              'Harfleri karışık olarak verilen ayları doğru bir şekilde yazalım!',
+              style: TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                  fontFamily: 'Comic Sans MS'),
+              textAlign: TextAlign.center,
+            ),
+            const SizedBox(height: 16), // Başlık altına boşluk ekleyelim
             Expanded(
               child: ListView.builder(
                 itemCount: aylar.length,
@@ -88,12 +98,17 @@ class _KarisikAylarState extends State<KarisikAylar> {
                         Container(
                           padding: const EdgeInsets.all(8.0),
                           decoration: BoxDecoration(
-                            color: Colors.primaries[index % Colors.primaries.length].withOpacity(0.3),
+                            color: Colors
+                                .primaries[index % Colors.primaries.length]
+                                .withOpacity(0.3),
                             borderRadius: BorderRadius.circular(12),
                           ),
                           child: Text(
                             karisikAylar[index],
-                            style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold, fontFamily: 'Comic Sans MS'),
+                            style: const TextStyle(
+                                fontSize: 24,
+                                fontWeight: FontWeight.bold,
+                                fontFamily: 'Comic Sans MS'),
                           ),
                         ),
                         const SizedBox(height: 8),
@@ -105,7 +120,11 @@ class _KarisikAylarState extends State<KarisikAylar> {
                             border: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(12),
                             ),
-                            errorText: hataVarMi && controllers[index].text.toLowerCase() != aylar[index].toLowerCase() ? 'Yanlış giriş, tekrar deneyin' : null,
+                            errorText: hataVarMi &&
+                                    controllers[index].text.toLowerCase() !=
+                                        aylar[index].toLowerCase()
+                                ? 'Yanlış giriş, tekrar deneyin'
+                                : null,
                           ),
                         ),
                       ],
@@ -116,17 +135,23 @@ class _KarisikAylarState extends State<KarisikAylar> {
             ),
             ElevatedButton(
               onPressed: dogrula,
-              child: const Text('Onayla', style: TextStyle(fontSize: 18, fontFamily: 'Comic Sans MS')),
+              child: const Text('Onayla',
+                  style: TextStyle(fontSize: 18, fontFamily: 'Comic Sans MS')),
               style: ElevatedButton.styleFrom(
                 backgroundColor: Colors.lightBlueAccent,
-                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-                padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(12)),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
               ),
             ),
             const SizedBox(height: 8),
             Text(
               mesaj,
-              style: TextStyle(fontSize: 20, color: hataVarMi ? Colors.red : Colors.green, fontFamily: 'Comic Sans MS'),
+              style: TextStyle(
+                  fontSize: 20,
+                  color: hataVarMi ? Colors.red : Colors.green,
+                  fontFamily: 'Comic Sans MS'),
             ),
           ],
         ),
