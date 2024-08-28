@@ -104,7 +104,7 @@ class _MathQuizState extends State<MathQuiz> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Hesaplama Benim İşim!'),
+        title: const Text('Birlikte Hesaplayalım!'),
       ),
       body: SingleChildScrollView(
         child: Padding(
