@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 
-
 class YansimaIsaretlemeOyunu extends StatefulWidget {
   const YansimaIsaretlemeOyunu({super.key});
 
@@ -34,7 +33,7 @@ class _YansimaIsaretlemeOyunuState extends State<YansimaIsaretlemeOyunu> {
 
   final List<List<List<bool>>> rightGrids = List.generate(
     4,
-        (_) => List.generate(3, (index) => List.generate(3, (index) => false)),
+    (_) => List.generate(3, (index) => List.generate(3, (index) => false)),
   );
 
   void onRightCellTap(int gridIndex, int row, int col) {
@@ -57,8 +56,8 @@ class _YansimaIsaretlemeOyunuState extends State<YansimaIsaretlemeOyunu> {
         return AlertDialog(
           title: Text('Sonuç'),
           content: Text(isCorrect.every((correct) => correct)
-              ? 'Hepsi Doğru'
-              : 'Yanlışlar veya Eksikler Var'),
+              ? 'Harika! Hepsi Doğru'
+              : 'Üzgünüm,yanlış veya eksik cevap.\nHadi Tekrar Deneyelim!'),
           actions: [
             TextButton(
               onPressed: () {
@@ -72,7 +71,8 @@ class _YansimaIsaretlemeOyunuState extends State<YansimaIsaretlemeOyunu> {
     );
   }
 
-  bool _checkGridReflection(List<List<bool>> leftGrid, List<List<bool>> rightGrid) {
+  bool _checkGridReflection(
+      List<List<bool>> leftGrid, List<List<bool>> rightGrid) {
     for (int row = 0; row < 3; row++) {
       for (int col = 0; col < 3; col++) {
         if (leftGrid[row][col] != rightGrid[row][2 - col]) {
@@ -87,7 +87,7 @@ class _YansimaIsaretlemeOyunuState extends State<YansimaIsaretlemeOyunu> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Yansıma İşaretleme Oyunu'),
+        title: Text('Doğru Yansımayı Bulalım!'),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -95,7 +95,7 @@ class _YansimaIsaretlemeOyunuState extends State<YansimaIsaretlemeOyunu> {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Text(
-              'Şekillerin yansımasını işaretleyiniz.',
+              'Verilen şekillerin yansımasını kutucuklara işaretleyelim.',
               style: TextStyle(fontSize: 18),
             ),
             SizedBox(height: 10),
@@ -158,7 +158,8 @@ class _YansimaIsaretlemeOyunuState extends State<YansimaIsaretlemeOyunu> {
                             child: GridWidget(
                               gridState: rightGrids[index],
                               isLeftGrid: false,
-                              onCellTap: (row, col) => onRightCellTap(index, row, col),
+                              onCellTap: (row, col) =>
+                                  onRightCellTap(index, row, col),
                             ),
                           ),
                         ],
