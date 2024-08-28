@@ -79,6 +79,11 @@ class _WordMatchingScreenState extends State<WordMatchingScreen>
           selectedSyllable = firstSyllables[selectedIndex];
           usedSyllables.add(selectedSyllable!);
           combinedWord = null;
+
+          // Eğer seçilen hece doğru değilse çark dönmeye devam eder
+          if (correctSyllables.contains(selectedSyllable)) {
+            _spinWheel();
+          }
         });
       }
     });
@@ -115,19 +120,19 @@ class _WordMatchingScreenState extends State<WordMatchingScreen>
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Kelime Eşleştirme'),
+        title: const Text('ÇARKIFELEK'),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
           children: [
-            const SizedBox(height: 20),
+            const SizedBox(height: 5),
             const Text(
-              'Doğru heceyi boş kutucuğa sürükle ve anlamlı kelimeler oluştur.',
-              style: TextStyle(fontSize: 15, fontWeight: FontWeight.w300),
+              'Doğru heceyi boş kutucuğa sürükleyelim ve anlamlı kelimeler oluşturalım!',
+              style: TextStyle(fontSize: 20, fontWeight: FontWeight.w300),
               textAlign: TextAlign.center,
             ),
-            const SizedBox(height: 20),
+            const SizedBox(height: 10),
             GestureDetector(
               onTap: _spinWheel,
               child: Transform.rotate(
@@ -166,7 +171,7 @@ class _WordMatchingScreenState extends State<WordMatchingScreen>
                         userMatches[selectedSyllable!] = receivedItem;
                         if (correctMatches[selectedSyllable] == receivedItem) {
                           combinedWord = selectedSyllable! + receivedItem;
-                          correctSyllables.add(receivedItem);
+                          correctSyllables.add(selectedSyllable!);
                         } else {
                           combinedWord = null;
                         }
