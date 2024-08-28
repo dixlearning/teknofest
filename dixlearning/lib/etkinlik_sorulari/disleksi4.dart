@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 class Disleksi4 extends StatelessWidget {
   final TextEditingController _controller = TextEditingController();
   final String correctText =
-      "dandini dandini danalı bebek elleri kolları kınalı bebek benim oğlum nazlı bebek";
+      "Dandini dandini danalı bebek Elleri kolları kınalı bebek Benim oğlum nazlı bebek";
 
   Disleksi4({super.key});
 
@@ -11,7 +11,7 @@ class Disleksi4 extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Heceleri Yerleştir'),
+        title: const Text('Birlikte Mani Yazalım!'),
       ),
       body: Container(
         color: Colors.indigo[100],
@@ -21,7 +21,7 @@ class Disleksi4 extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               const Text(
-                'Aşağıdaki heceleri sayıları dikkate alarak yerleştiriniz. Oluşan metni okuyunuz. Kontrol ediniz. Kontrol sonucunda eksik/fazla kelime girmeniz durumunda uyarı alacaksınız.',
+                'Numaralandırılmış heceleri, kutularda bulunan sayılara dikkat edecek şekilde aşağıdaki metin kutusuna yazalım.\n\nDoğru sayıda kelime yazmaya dikkat edelim!',
                 style: TextStyle(fontSize: 16),
               ),
               const SizedBox(height: 10),
@@ -33,7 +33,7 @@ class Disleksi4 extends StatelessWidget {
                   _buildSyllableItem('2) dini'),
                   _buildSyllableItem('3) alı'),
                   _buildSyllableItem('4) ben'),
-                  _buildSyllableItem('5) dan'),
+                  _buildSyllableItem('5) Dan'),
                   _buildSyllableItem('6) im'),
                   _buildSyllableItem('7) bek'),
                   _buildSyllableItem('8) lum'),
@@ -54,14 +54,14 @@ class Disleksi4 extends StatelessWidget {
                 controller: _controller,
                 decoration: const InputDecoration(
                   border: OutlineInputBorder(),
-                  labelText: 'Metni buraya yazınız',
+                  labelText: 'Maniyi buraya yazalım!',
                 ),
                 style: const TextStyle(fontSize: 12),
               ),
               const SizedBox(height: 20),
               ElevatedButton(
                 onPressed: () => _checkText(context),
-                child: const Text('Kontrol Et'),
+                child: const Text('Kontrol Et!'),
               ),
             ],
           ),
@@ -128,12 +128,10 @@ class Disleksi4 extends StatelessWidget {
     List<String> correctWords = lowerCorrectText.split(' ');
 
     if (userWords.length < 12) {
-      _showAlert(context,
-          'Eksik kelime girdiniz. Lütfen 12 kelime girdiğinize emin olunuz.');
+      _showAlert(context, 'Eksik kelime sayısı.\n12 kelime yazdığına emin ol!');
       return;
     } else if (userWords.length > 12) {
-      _showAlert(context,
-          'Fazla kelime girdiniz. Lütfen 12 kelime girdiğinize emin olunuz.');
+      _showAlert(context, 'Fazla kelime sayısı.\n12 kelime yazdığına emin ol!');
       return;
     }
 
@@ -195,7 +193,7 @@ class Disleksi4 extends StatelessWidget {
     showDialog(
       context: context,
       builder: (BuildContext context) => AlertDialog(
-        title: const Text('Uyarı'),
+        title: const Text('Uyarı!'),
         content: Text(message),
         actions: [
           TextButton(
