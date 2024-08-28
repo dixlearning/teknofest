@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'dart:math';
 
 class EmojiQuiz extends StatefulWidget {
   const EmojiQuiz({super.key});
@@ -9,119 +10,150 @@ class EmojiQuiz extends StatefulWidget {
 
 class _EmojiQuizState extends State<EmojiQuiz> {
   final List<Map<String, String>> _emojis = [
-    {'name': 'şapka', 'emoji': '🎩'},
-    {'name': 'ampul', 'emoji': '💡'},
-    {'name': 'fırça', 'emoji': '🖌️'},
-    {'name': 'havuç', 'emoji': '🥕'},
-    {'name': 'kahve', 'emoji': '☕'},
-    {'name': 'piyano', 'emoji': '🎹'},
-    {'name': 'kiraz', 'emoji': '🍒'},
-    {'name': 'peynir', 'emoji': '🧀'},
-    {'name': 'makas', 'emoji': '✂️'},
-    {'name': 'mum', 'emoji': '🕯️'},
-    {'name': 'ağaç', 'emoji': '🌳'},
-    {'name': 'anahtar', 'emoji': '🔑'},
-    {'name': 'örümcek', 'emoji': '🕷️'},
+    {'name': 'Şapka', 'emoji': '🎩'},
+    {'name': 'Ampul', 'emoji': '💡'},
+    {'name': 'Fırça', 'emoji': '🖌️'},
+    {'name': 'Havuç', 'emoji': '🥕'},
+    {'name': 'Kahve', 'emoji': '☕'},
+    {'name': 'Piyano', 'emoji': '🎹'},
+    {'name': 'Kiraz', 'emoji': '🍒'},
+    {'name': 'Peynir', 'emoji': '🧀'},
+    {'name': 'Makas', 'emoji': '✂️'},
+    {'name': 'Mum', 'emoji': '🕯️'},
+    {'name': 'Ağaç', 'emoji': '🌳'},
+    {'name': 'Anahtar', 'emoji': '🔑'},
+    {'name': 'Örümcek', 'emoji': '🕷️'},
   ];
 
   int _currentIndex = 0;
   String _feedbackMessage = '';
   bool _showNextButton = false;
+  bool _showAnswerButton = false;
   bool _isCorrectAnswer = false;
-  String _correctAnswer = '';
+  int _correctCount = 0;
+  int _wrongCount = 0;
+  bool _quizCompleted = false;
   TextEditingController _controller = TextEditingController();
+  late List<Map<String, String>> _shuffledEmojis;
+
+  @override
+  void initState() {
+    super.initState();
+    _shuffledEmojis = List.from(_emojis)..shuffle();
+  }
 
   void _checkAnswer() {
     String userAnswer = _controller.text.trim().toLowerCase();
-    String correctAnswer = _emojis[_currentIndex]['name']!;
+    String correctAnswer =
+        _shuffledEmojis[_currentIndex]['name']!.toLowerCase();
 
     if (userAnswer == correctAnswer) {
       setState(() {
         _feedbackMessage = 'Doğru!';
         _isCorrectAnswer = true;
-        _correctAnswer = userAnswer;
         _showNextButton = true;
+        _correctCount++;
       });
     } else {
       setState(() {
-        _feedbackMessage = 'Yanlış! Doğru cevap: $correctAnswer';
-        _showNextButton = true;
+        _feedbackMessage = 'Tekrar Dene!';
+        _showAnswerButton = true;
         _isCorrectAnswer = false;
+        _wrongCount++;
       });
     }
   }
 
-  void _nextQuestion() {
+  void _showCorrectAnswer() {
     setState(() {
-      _currentIndex++;
-      _feedbackMessage = '';
-      _showNextButton = false;
-      _isCorrectAnswer = false;
-      _controller.clear();
-
-      if (_currentIndex >= _emojis.length) {
-        _currentIndex = 0;
-        _feedbackMessage = 'Tebrikler! Tüm emojileri tamamladınız.';
-        _showNextButton = false;
-      }
+      _feedbackMessage = _shuffledEmojis[_currentIndex]['name']!;
+      _showAnswerButton = false;
+      _showNextButton = true;
+      _isCorrectAnswer = true;
     });
+  }
+
+  void _nextQuestion() {
+    if (_currentIndex < _shuffledEmojis.length - 1) {
+      setState(() {
+        _currentIndex++;
+        _feedbackMessage = '';
+        _showNextButton = false;
+        _isCorrectAnswer = false;
+        _controller.clear();
+      });
+    } else {
+      setState(() {
+        _quizCompleted = true;
+        _feedbackMessage = 'Tebrikler! Tüm emojileri tamamladınız.\n'
+            'Doğru: $_correctCount, Yanlış: $_wrongCount';
+      });
+    }
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Emoji Tanıma Etkinliği'),
+        title: Text('Görseldeki Ne?'),
       ),
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Text(
-                _emojis[_currentIndex]['emoji']!,
-                style: TextStyle(fontSize: 100),
-              ),
-              if (_isCorrectAnswer)
-                TextField(
-                  controller: TextEditingController(text: _correctAnswer),
-                  decoration: InputDecoration(
-                    labelText: 'Görseldeki nedir?',
-                    labelStyle: TextStyle(color: Colors.green),
-                    enabled: false,
-                  ),
-                  style: TextStyle(color: Colors.green),
-                )
-              else
-                TextField(
-                  controller: _controller,
-                  decoration: InputDecoration(
-                    labelText: 'Görseldeki nedir?',
-                  ),
-                  onSubmitted: (_) => _checkAnswer(),
-                ),
-              SizedBox(height: 20),
-              ElevatedButton(
-                onPressed: _checkAnswer,
-                child: Text('Cevabı Kontrol Et'),
-              ),
-              SizedBox(height: 20),
-              Text(
-                _feedbackMessage,
-                style: TextStyle(fontSize: 24, color: Colors.red),
+      body: _quizCompleted
+          ? Center(
+              child: Text(
+                'Tebrikler! \n'
+                'Tüm soruları tamamladınız.\n'
+                'Doğru: $_correctCount, Yanlış: $_wrongCount',
+                style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
                 textAlign: TextAlign.center,
               ),
-              SizedBox(height: 20),
-              if (_showNextButton)
-                ElevatedButton(
-                  onPressed: _nextQuestion,
-                  child: Text('Sıradaki Soruya Geç'),
+            )
+          : SingleChildScrollView(
+              child: Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      _shuffledEmojis[_currentIndex]['emoji']!,
+                      style: TextStyle(fontSize: 100),
+                    ),
+                    TextField(
+                      controller: _controller,
+                      decoration: InputDecoration(
+                        labelText: 'Görseldeki nesnenin adını yazalım.',
+                      ),
+                      onSubmitted: (_) => _checkAnswer(),
+                    ),
+                    SizedBox(height: 20),
+                    if (!_showAnswerButton && !_showNextButton)
+                      ElevatedButton(
+                        onPressed: _checkAnswer,
+                        child: Text('Cevabı Kontrol Et'),
+                      ),
+                    SizedBox(height: 20),
+                    Text(
+                      _feedbackMessage,
+                      style: TextStyle(
+                        fontSize: 24,
+                        color: _isCorrectAnswer ? Colors.green : Colors.red,
+                      ),
+                      textAlign: TextAlign.center,
+                    ),
+                    SizedBox(height: 20),
+                    if (_showAnswerButton)
+                      ElevatedButton(
+                        onPressed: _showCorrectAnswer,
+                        child: Text('Cevabı Görüntüle'),
+                      ),
+                    if (_showNextButton)
+                      ElevatedButton(
+                        onPressed: _nextQuestion,
+                        child: Text('Sıradaki Soruya Geç'),
+                      ),
+                  ],
                 ),
-            ],
-          ),
-        ),
-      ),
+              ),
+            ),
     );
   }
 }
