@@ -1,14 +1,11 @@
 import 'package:flutter/material.dart';
 
-
-
 class DyslexiaActivityPage extends StatefulWidget {
   const DyslexiaActivityPage({super.key});
 
   @override
   _DyslexiaActivityPageState createState() => _DyslexiaActivityPageState();
 }
-
 
 class _DyslexiaActivityPageState extends State<DyslexiaActivityPage> {
   final List<List<String>> letters = [
@@ -21,20 +18,18 @@ class _DyslexiaActivityPageState extends State<DyslexiaActivityPage> {
     ['n', 'u', 'm', 'n', 'u'],
   ];
 
-
-  List<List<bool>> selected = List.generate(7, (_) => List.generate(5, (_) => false));
-
+  List<List<bool>> selected =
+      List.generate(7, (_) => List.generate(5, (_) => false));
 
   int selectedCount = 0;
   late int totalUCount;
 
-
   @override
   void initState() {
     super.initState();
-    totalUCount = letters.expand((row) => row).where((letter) => letter == 'u').length;
+    totalUCount =
+        letters.expand((row) => row).where((letter) => letter == 'u').length;
   }
-
 
   void _checkSelection() {
     int selectedUCount = 0;
@@ -49,13 +44,13 @@ class _DyslexiaActivityPageState extends State<DyslexiaActivityPage> {
       selectedCount = selectedUCount;
     });
 
-
     showDialog(
       context: context,
       builder: (context) {
         return AlertDialog(
           title: const Text('Sonuç'),
-          content: Text('Seçilen \'u\' harfi sayısı: $selectedCount\n Kalan \'u\' harfi sayısı: ${totalUCount - selectedCount}'),
+          content: Text(
+              'Seçilen \'u\' harfi: $selectedCount\n Kalan \'u\' harfi: ${totalUCount - selectedCount}'),
           actions: [
             TextButton(
               child: const Text('Tamam'),
@@ -69,61 +64,75 @@ class _DyslexiaActivityPageState extends State<DyslexiaActivityPage> {
     );
   }
 
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("'u' harfini bul ve maviye boya."),
+        title: const Text("Doğru Harfi Bulalım! "),
       ),
-      body: Column(
-        children: [
-          Expanded(
-            child: GridView.builder(
-              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 5,
+      body: Container(
+        color: Colors.lightBlue[200], // Arka plan rengini ayarladık
+        child: Column(
+          children: [
+            const Padding(
+              padding: EdgeInsets.all(16.0),
+              child: Text(
+                "Dairelerde bulunan 'u' harflerini bul, maviye boya!",
+                style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold),
+                textAlign: TextAlign.center,
               ),
-              itemCount: 35, // 7 * 5 = 35
-              itemBuilder: (context, index) {
-                int row = index ~/ 5;
-                int col = index % 5;
-                return GestureDetector(
-                  onTap: () {
-                    setState(() {
-                      if (letters[row][col] == 'u') {
-                        selected[row][col] = !selected[row][col];
-                      }
-                    });
-                  },
-                  child: Container(
-                    margin: const EdgeInsets.all(4.0),
-                    decoration: BoxDecoration(
-                      color: selected[row][col] ? Colors.blue : Colors.white,
-                      shape: BoxShape.circle,
-                      border: Border.all(
-                        color: Colors.black,
-                        width: 1.0,
+            ),
+            Expanded(
+              child: GridView.builder(
+                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 5,
+                ),
+                itemCount: 35, // 7 * 5 = 35
+                itemBuilder: (context, index) {
+                  int row = index ~/ 5;
+                  int col = index % 5;
+                  return GestureDetector(
+                    onTap: () {
+                      setState(() {
+                        if (letters[row][col] == 'u') {
+                          selected[row][col] = !selected[row][col];
+                        }
+                      });
+                    },
+                    child: Container(
+                      margin: const EdgeInsets.all(4.0),
+                      decoration: BoxDecoration(
+                        color: selected[row][col]
+                            ? Colors.blue
+                            : Colors.lightGreen[
+                                100], // Dairelerin varsayılan rengi lightGreen[100] olacak
+                        shape: BoxShape.circle,
+                        border: Border.all(
+                          color: Colors.black,
+                          width: 1.0,
+                        ),
                       ),
-                    ),
-                    child: Center(
-                      child: Text(
-                        letters[row][col],
-                        style: const TextStyle(
-                          fontSize: 24.0,
-                          fontWeight: FontWeight.bold,
+                      child: Center(
+                        child: Text(
+                          letters[row][col],
+                          style: const TextStyle(
+                            fontSize: 24.0,
+                            fontWeight: FontWeight.bold,
+                          ),
                         ),
                       ),
                     ),
-                  ),
-                );
-              },
+                  );
+                },
+              ),
             ),
-          ),
-          ElevatedButton(
-            onPressed: _checkSelection,
-            child: const Text('Kontrol Et'),
-          ),
-        ],
+            ElevatedButton(
+              onPressed: _checkSelection,
+              child: const Text('Kontrol Et'),
+            ),
+          ],
+        ),
       ),
     );
-  }}
+  }
+}
