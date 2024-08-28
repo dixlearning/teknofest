@@ -1,7 +1,5 @@
-
 import 'package:flutter/material.dart';
 import 'dart:async';
-
 
 class StartScreen extends StatelessWidget {
   const StartScreen({super.key});
@@ -9,7 +7,7 @@ class StartScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Baş Harfi Bulma Etkinliği')),
+      appBar: AppBar(title: const Text('Baş Harfini Söyle!')),
       body: Center(
         child: ElevatedButton(
           onPressed: () {
@@ -20,7 +18,7 @@ class StartScreen extends StatelessWidget {
           },
           child: Text('Başla', style: TextStyle(fontSize: 24)),
           style: ElevatedButton.styleFrom(
-            backgroundColor: Colors.pink,  // Düzeltilmiş
+            backgroundColor: Colors.pink, // Düzeltilmiş
             padding: EdgeInsets.symmetric(horizontal: 40, vertical: 20),
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(20),
@@ -177,7 +175,7 @@ class _ActivityScreenState extends State<ActivityScreen> {
   Widget build(BuildContext context) {
     final currentQuestion = _questions[_currentQuestionIndex];
     final items = currentQuestion['items'] as List<Map<String, String>>;
-    
+
     return Scaffold(
       appBar: AppBar(title: Text('Oyun')),
       body: Center(
@@ -216,7 +214,8 @@ class _ActivityScreenState extends State<ActivityScreen> {
                           SizedBox(height: 5),
                           Text(
                             item['name']!,
-                            style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                            style: TextStyle(
+                                fontSize: 16, fontWeight: FontWeight.bold),
                             textAlign: TextAlign.center,
                           ),
                         ],
@@ -246,21 +245,25 @@ class _ActivityScreenState extends State<ActivityScreen> {
                       child: Text('Kontrol Et'),
                       style: ElevatedButton.styleFrom(
                         backgroundColor: _buttonColor, // Düzeltilmiş
-                        padding: EdgeInsets.symmetric(horizontal: 30, vertical: 15),
+                        padding:
+                            EdgeInsets.symmetric(horizontal: 30, vertical: 15),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(20),
                         ),
-                        textStyle: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                        textStyle: TextStyle(
+                            fontSize: 20, fontWeight: FontWeight.bold),
                       ),
                     ),
                     SizedBox(height: 20),
                     AnimatedContainer(
                       duration: Duration(milliseconds: 300),
                       color: _feedbackColor,
-                      padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                      padding:
+                          EdgeInsets.symmetric(horizontal: 20, vertical: 10),
                       child: Text(
                         _feedbackMessage,
-                        style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                        style: TextStyle(
+                            fontSize: 18, fontWeight: FontWeight.bold),
                       ),
                     ),
                   ],
@@ -319,12 +322,13 @@ class EndScreen extends StatelessWidget {
                 },
                 child: Text('Tekrar Oyna'),
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.pink,  // Düzeltilmiş
+                  backgroundColor: Colors.pink, // Düzeltilmiş
                   padding: EdgeInsets.symmetric(horizontal: 40, vertical: 20),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(20),
                   ),
-                  textStyle: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+                  textStyle:
+                      TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
                 ),
               ),
             ],
