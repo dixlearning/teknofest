@@ -9,7 +9,7 @@ class StartScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Baş Harfi Bulma Etkinliği')),
+      appBar: AppBar(title: const Text('Baş Harfi Ne?')),
       body: Center(
         child: ElevatedButton(
           onPressed: () {
