@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 
-
-
 class ToplamaSayfasi extends StatefulWidget {
   const ToplamaSayfasi({super.key});
 
@@ -28,8 +26,10 @@ class _ToplamaSayfasiState extends State<ToplamaSayfasi> {
     super.initState();
     dogruCevaplar = sorular.map((soru) => soru[0] + soru[1]).toList();
     dogruCevaplar.sort((a, b) => b.compareTo(a));
-    cevapKontrolleri = List.generate(sorular.length, (index) => TextEditingController());
-    sonucKontrolleri = List.generate(dogruCevaplar.length, (index) => TextEditingController());
+    cevapKontrolleri =
+        List.generate(sorular.length, (index) => TextEditingController());
+    sonucKontrolleri =
+        List.generate(dogruCevaplar.length, (index) => TextEditingController());
     cevapDogruMu = List.filled(sorular.length, true);
     sonucDogruMu = List.filled(dogruCevaplar.length, true);
   }
@@ -41,14 +41,17 @@ class _ToplamaSayfasiState extends State<ToplamaSayfasi> {
 
     // Sonuçların doğru olup olmadığını kontrol et
     for (int i = 0; i < sorular.length; i++) {
-      if (int.tryParse(cevapKontrolleri[i].text) != sorular[i][0] + sorular[i][1]) {
+      if (int.tryParse(cevapKontrolleri[i].text) !=
+          sorular[i][0] + sorular[i][1]) {
         dogruMu = false;
         yeniCevapDogruMu[i] = false;
       }
     }
 
     // Sıralamanın doğru olup olmadığını kontrol et
-    List<int> kullaniciCevaplari = sonucKontrolleri.map((controller) => int.tryParse(controller.text) ?? 0).toList();
+    List<int> kullaniciCevaplari = sonucKontrolleri
+        .map((controller) => int.tryParse(controller.text) ?? 0)
+        .toList();
     List<int> dogruSiraliCevaplar = List.from(dogruCevaplar);
     dogruSiraliCevaplar.sort((a, b) => b.compareTo(a));
 
@@ -87,8 +90,8 @@ class _ToplamaSayfasiState extends State<ToplamaSayfasi> {
         context: context,
         builder: (context) {
           return AlertDialog(
-            title: Text('Yanlış!'),
-            content: Text('Lütfen tekrar deneyin.'),
+            title: Text('Üzgünüm,Yanlış Cevap.'),
+            content: Text('Hadi tekrar deneyelim!'),
             actions: [
               TextButton(
                 onPressed: () {
@@ -107,7 +110,7 @@ class _ToplamaSayfasiState extends State<ToplamaSayfasi> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Toplama Etkinliği'),
+        title: Text('Toplama Benim İşim!'),
         backgroundColor: Colors.pinkAccent,
         actions: [
           IconButton(
@@ -149,12 +152,13 @@ class _ToplamaSayfasiState extends State<ToplamaSayfasi> {
                             filled: true,
                             fillColor: Colors.white,
                             hintText: '',
-                            errorText: cevapDogruMu[index] ? null : 'Yanlış',
+                            errorText:
+                                cevapDogruMu[index] ? null : 'Tekrar Dene!',
                             errorBorder: cevapDogruMu[index]
                                 ? null
                                 : OutlineInputBorder(
-                              borderSide: BorderSide(color: Colors.red),
-                            ),
+                                    borderSide: BorderSide(color: Colors.red),
+                                  ),
                           ),
                         ),
                       ),
@@ -164,7 +168,7 @@ class _ToplamaSayfasiState extends State<ToplamaSayfasi> {
               }),
               SizedBox(height: 20),
               Text(
-                'Sonuçları büyükten küçüğe sıralayınız:',
+                'Sonuçları büyükten küçüğe doğru sıralayalım:',
                 style: TextStyle(fontSize: 20, color: Colors.purple),
               ),
               SizedBox(height: 10),
@@ -186,12 +190,14 @@ class _ToplamaSayfasiState extends State<ToplamaSayfasi> {
                             filled: true,
                             fillColor: Colors.white,
                             hintText: '',
-                            errorText: sonucDogruMu[textFieldIndex] ? null : 'Yanlış',
+                            errorText: sonucDogruMu[textFieldIndex]
+                                ? null
+                                : 'Tekrar Dene!',
                             errorBorder: sonucDogruMu[textFieldIndex]
                                 ? null
                                 : OutlineInputBorder(
-                              borderSide: BorderSide(color: Colors.red),
-                            ),
+                                    borderSide: BorderSide(color: Colors.red),
+                                  ),
                           ),
                         ),
                       ),
@@ -210,7 +216,8 @@ class _ToplamaSayfasiState extends State<ToplamaSayfasi> {
                   onPressed: kontrolEt,
                   child: Text('Kontrol Et'),
                   style: ElevatedButton.styleFrom(
-                    foregroundColor: Colors.white, backgroundColor: Colors.pinkAccent,
+                    foregroundColor: Colors.white,
+                    backgroundColor: Colors.pinkAccent,
                     textStyle: TextStyle(fontSize: 20),
                     padding: EdgeInsets.symmetric(horizontal: 30, vertical: 15),
                     shape: RoundedRectangleBorder(
