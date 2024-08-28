@@ -1,5 +1,3 @@
-
-
 import 'dart:math';
 
 import 'package:flutter/material.dart';
@@ -43,7 +41,9 @@ class _KarisikRenklerState extends State<KarisikRenkler> {
 
   final List<int> renkIndeksleri = [];
   final List<TextEditingController> controllers = [];
+  final List<String> dogruYanlisDurumu = [];
   String mesaj = '';
+  int dogruSayisi = 0;
 
   @override
   void initState() {
@@ -54,6 +54,7 @@ class _KarisikRenklerState extends State<KarisikRenkler> {
   void generateRenkIndeksleri() {
     renkIndeksleri.clear();
     controllers.clear();
+    dogruYanlisDurumu.clear();
 
     // Renk indekslerini karışık bir şekilde oluştur
     List<int> randomIndexes = List.generate(renkler.length, (index) => index);
@@ -62,20 +63,26 @@ class _KarisikRenklerState extends State<KarisikRenkler> {
     for (int i = 0; i < renkler.length; i++) {
       renkIndeksleri.add(randomIndexes[i]);
       controllers.add(TextEditingController());
+      dogruYanlisDurumu
+          .add(''); // Başlangıçta her bir kutu için boş durumu ekliyoruz
     }
   }
 
   void dogrula() {
     setState(() {
-      bool hepsiDogru = true;
+      dogruSayisi = 0;
+
       for (int i = 0; i < renkler.length; i++) {
         String normalizedInput = controllers[i].text.toLowerCase();
-        if (normalizedInput != renkIsimleri[renkIndeksleri[i]].toLowerCase()) {
-          hepsiDogru = false;
-          break;
+        if (normalizedInput == renkIsimleri[renkIndeksleri[i]].toLowerCase()) {
+          dogruYanlisDurumu[i] = 'Doğru!';
+          dogruSayisi++;
+        } else {
+          dogruYanlisDurumu[i] = 'Tekrar dene!';
         }
       }
-      mesaj = hepsiDogru ? 'Tüm cevaplar doğru!' : 'Bazı cevaplar yanlış, tekrar deneyin!';
+
+      mesaj = 'Doğru Sayısı: $dogruSayisi / ${renkler.length}';
     });
   }
 
@@ -83,7 +90,7 @@ class _KarisikRenklerState extends State<KarisikRenkler> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Karışık Renkler'),
+        title: const Text('Hangi Renk?'),
       ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16.0),
@@ -109,7 +116,18 @@ class _KarisikRenklerState extends State<KarisikRenkler> {
                                 const SizedBox(height: 8),
                                 TextField(
                                   controller: controllers[j],
-                                  decoration: const InputDecoration(labelText: 'Rengi girin'),
+                                  decoration: const InputDecoration(
+                                      labelText: 'Rengi girin'),
+                                ),
+                                const SizedBox(height: 8),
+                                Text(
+                                  dogruYanlisDurumu[j],
+                                  style: TextStyle(
+                                    fontSize: 16,
+                                    color: dogruYanlisDurumu[j] == 'Doğru!'
+                                        ? Colors.green
+                                        : Colors.red,
+                                  ),
                                 ),
                               ],
                             ),
@@ -127,7 +145,7 @@ class _KarisikRenklerState extends State<KarisikRenkler> {
             const SizedBox(height: 8),
             Text(
               mesaj,
-              style: const TextStyle(fontSize: 20, color: Colors.green),
+              style: const TextStyle(fontSize: 20, color: Colors.blue),
             ),
             ElevatedButton(
               onPressed: () {
