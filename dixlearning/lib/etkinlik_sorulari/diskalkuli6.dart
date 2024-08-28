@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 
-
 class CountingGame extends StatefulWidget {
   const CountingGame({super.key});
 
@@ -39,7 +38,18 @@ class _CountingGameState extends State<CountingGame> {
   }
 
   void _checkAnswers() {
-    Map<int, int> counts = {0: 0, 1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0, 7: 0, 8: 0, 9: 0};
+    Map<int, int> counts = {
+      0: 0,
+      1: 0,
+      2: 0,
+      3: 0,
+      4: 0,
+      5: 0,
+      6: 0,
+      7: 0,
+      8: 0,
+      9: 0
+    };
 
     for (var row in numbers) {
       for (var num in row) {
@@ -56,9 +66,9 @@ class _CountingGameState extends State<CountingGame> {
     });
 
     if (isCorrect) {
-      _showDialog('TEBRİKLER!', 'Tüm sayıları doğru saydınız.');
+      _showDialog('Harikasın!\n', 'Tüm sayıları doğru saydın!');
     } else {
-      _showDialog('YANLIŞ!', 'Lütfen sayıları tekrar kontrol edin.');
+      _showDialog('Üzgünüm, yanlış cevap.\n', 'Hadi tekrar deneylim!');
     }
   }
 
@@ -86,7 +96,7 @@ class _CountingGameState extends State<CountingGame> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Sayı Sayma Oyunu'),
+        title: Text('Kaç Tane Var?'),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -94,22 +104,25 @@ class _CountingGameState extends State<CountingGame> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              'Tabloda yer alan sayıların her biri için kaç tane olduğunu aşağıdaki kutucuklara yazınız.',
-              style: TextStyle(fontSize: 20),
+              'Tabloda yer alan her rakamın kaç tane olduğunu bulalım, ardından sayılarını kutucuklara yazalım!',
+              style: TextStyle(
+                  fontSize: 23, color: const Color.fromARGB(255, 33, 89, 243)),
             ),
-            SizedBox(height: 8),
+            SizedBox(height: 10),
             Expanded(
-              child: ListView(
+              child: Column(
                 children: [
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: List.generate(
-                      numbers.length,
-                          (index) => Padding(
-                        padding: const EdgeInsets.only(bottom: 4.0),
-                        child: Text(
-                          '${numbers[index].join(' - ')}',
-                          style: TextStyle(fontSize: 20),
+                  Center(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: List.generate(
+                        numbers.length,
+                        (index) => Padding(
+                          padding: const EdgeInsets.only(bottom: 4.0),
+                          child: Text(
+                            '${numbers[index].join(' - ')}',
+                            style: TextStyle(fontSize: 20),
+                          ),
                         ),
                       ),
                     ),
@@ -119,7 +132,7 @@ class _CountingGameState extends State<CountingGame> {
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: List.generate(
                       10,
-                          (index) => Expanded(
+                      (index) => Expanded(
                         child: Column(
                           children: [
                             Text(index.toString()),
@@ -136,9 +149,13 @@ class _CountingGameState extends State<CountingGame> {
                                 controller: controllers[index],
                                 keyboardType: TextInputType.number,
                                 textAlign: TextAlign.center,
+                                style: TextStyle(
+                                    color: Colors
+                                        .white), // Text color changed to white for better contrast
                                 decoration: InputDecoration(
                                   filled: true,
-                                  fillColor: Colors.red[200],
+                                  fillColor: Colors
+                                      .red[600], // Background color of text box
                                   border: InputBorder.none,
                                   contentPadding: EdgeInsets.all(8.0),
                                 ),
