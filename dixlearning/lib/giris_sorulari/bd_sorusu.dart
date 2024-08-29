@@ -6,8 +6,11 @@ class QuestionModel {
   late String answer;
   late String imageUrl;
 
-  QuestionModel(
-      {required this.question, required this.answer, required this.imageUrl});
+  QuestionModel({
+    required this.question,
+    required this.answer,
+    required this.imageUrl,
+  });
 
   void setQuestion(String getQuestion) {
     question = getQuestion;
@@ -101,9 +104,9 @@ class QuizPlayState extends State<QuizPlay>
             index++;
             resetAnim();
             startAnim();
-            isAnswered = false; // Cevaplanmadı olarak işaretle
+            isAnswered = false;
           } else {
-            stopAnim(); // Animasyonu durdur
+            stopAnim();
             Navigator.push(
               context,
               MaterialPageRoute(
@@ -143,10 +146,10 @@ class QuizPlayState extends State<QuizPlay>
         index++;
         resetAnim();
         startAnim();
-        isAnswered = false; // Cevaplanmadı olarak işaretle
+        isAnswered = false;
       });
     } else {
-      stopAnim(); // Animasyonu durdur
+      stopAnim();
       Navigator.push(
         context,
         MaterialPageRoute(
@@ -165,124 +168,131 @@ class QuizPlayState extends State<QuizPlay>
       body: Container(
         padding: const EdgeInsets.symmetric(vertical: 30, horizontal: 16),
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
-            Container(
-              padding: const EdgeInsets.symmetric(horizontal: 16),
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.end,
-                children: <Widget>[
-                  Text(
-                    "${index + 1}/${_questions.length}",
-                    style: const TextStyle(
-                        fontSize: 24, fontWeight: FontWeight.w500),
-                  ),
-                  const SizedBox(width: 8),
-                  const Text(
-                    "",
-                    style: TextStyle(fontSize: 24, fontWeight: FontWeight.w400),
-                  ),
-                ],
-              ),
-            ),
             const SizedBox(height: 20),
+            const Text(
+              "Verilen boşluğu doğru harf ile tamamlayalım.",
+              style: TextStyle(
+                fontSize: 28,
+                fontWeight: FontWeight.bold,
+              ),
+              textAlign: TextAlign.center,
+            ),
+            const SizedBox(height: 40),
             Text(
-              "${_questions[index].question}",
-              style: const TextStyle(fontWeight: FontWeight.w600, fontSize: 20),
+              _questions[index].question,
+              style: const TextStyle(
+                fontWeight: FontWeight.w600,
+                fontSize: 22,
+              ),
+              textAlign: TextAlign.center,
             ),
             const SizedBox(height: 20),
             LinearProgressIndicator(
               value: animation.value,
+              backgroundColor: Colors.grey.shade300,
+              color: Colors.blue,
             ),
-            const SizedBox(height: 20),
-            Container(
-              height: screenHeight * 0.3,
-              width: screenWidth * 0.8,
-              child: Image.asset(
-                _questions[index].imageUrl,
-                fit: BoxFit.cover,
+            const SizedBox(height: 40),
+            Center(
+              child: Container(
+                height: screenHeight * 0.3,
+                width: screenWidth * 0.8,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(15),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.grey.shade400,
+                      offset: Offset(0, 4),
+                      blurRadius: 10,
+                    ),
+                  ],
+                ),
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(15),
+                  child: Image.asset(
+                    _questions[index].imageUrl,
+                    fit: BoxFit.cover,
+                  ),
+                ),
               ),
             ),
             const Spacer(),
             if (!isAnswered) ...[
-              Container(
-                padding: const EdgeInsets.symmetric(horizontal: 16),
-                child: Row(
-                  children: <Widget>[
-                    Expanded(
-                      child: GestureDetector(
-                        onTap: () => checkAnswer("b"),
-                        child: Container(
-                          alignment: Alignment.center,
-                          padding: const EdgeInsets.symmetric(vertical: 12),
-                          child: const Text(
-                            "b",
-                            style: TextStyle(
-                                fontSize: 20,
-                                color: Colors.white,
-                                fontWeight: FontWeight.w500),
-                          ),
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(30),
-                            color: Colors.blue,
-                          ),
-                        ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  ElevatedButton(
+                    onPressed: () => checkAnswer("b"),
+                    style: ElevatedButton.styleFrom(
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(30),
+                      ),
+                      padding: const EdgeInsets.symmetric(
+                          vertical: 12, horizontal: 32),
+                      textStyle: const TextStyle(
+                        fontSize: 24,
+                        fontWeight: FontWeight.bold,
                       ),
                     ),
-                    const SizedBox(width: 20),
-                    Expanded(
-                      child: GestureDetector(
-                        onTap: () => checkAnswer("d"),
-                        child: Container(
-                          alignment: Alignment.center,
-                          padding: const EdgeInsets.symmetric(vertical: 12),
-                          child: const Text(
-                            "d",
-                            style: TextStyle(
-                                fontSize: 20,
-                                color: Colors.white,
-                                fontWeight: FontWeight.w500),
-                          ),
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(30),
-                            color: Colors.blue,
-                          ),
-                        ),
+                    child: const Text("b"),
+                  ),
+                  const SizedBox(width: 20),
+                  ElevatedButton(
+                    onPressed: () => checkAnswer("d"),
+                    style: ElevatedButton.styleFrom(
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(30),
+                      ),
+                      padding: const EdgeInsets.symmetric(
+                          vertical: 12, horizontal: 32),
+                      textStyle: const TextStyle(
+                        fontSize: 24,
+                        fontWeight: FontWeight.bold,
                       ),
                     ),
-                  ],
-                ),
+                    child: const Text("d"),
+                  ),
+                ],
               ),
             ] else ...[
               Text(
-                isCorrect ? "Doğru!" : "Yanlış!",
-                style: TextStyle(
+                "Cevap: ${_questions[index].getQuestion().replaceAll('_', _questions[index].getAnswer())}",
+                style: const TextStyle(
                   fontSize: 24,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              const SizedBox(height: 20),
+              Text(
+                isCorrect ? "Doğru Cevap!" : "Lütfen Dikkatli Ol!",
+                style: TextStyle(
+                  fontSize: 25,
                   color: isCorrect ? Colors.green : Colors.red,
                   fontWeight: FontWeight.bold,
                 ),
               ),
               const SizedBox(height: 20),
-              if (index < _questions.length - 1) ...[
-                ElevatedButton(
-                  onPressed: nextQuestion,
-                  child: const Text("Sıradaki Soru"),
+              ElevatedButton(
+                onPressed: nextQuestion,
+                style: ElevatedButton.styleFrom(
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(30),
+                  ),
+                  padding:
+                      const EdgeInsets.symmetric(vertical: 12, horizontal: 32),
+                  textStyle: const TextStyle(
+                    fontSize: 24,
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
-              ] else ...[
-                ElevatedButton(
-                  onPressed: () {
-                    // Sorular bittiğinde mat hesaplama ekranına geçiş yap
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) =>
-                            DiskalkuliEgitimPage(), // Geçiş yapılacak sayfa
-                      ),
-                    );
-                  },
-                  child: const Text("Sıradaki Soru"),
+                child: Text(
+                  index < _questions.length - 1 ? "Sıradaki Soru" : "Bitir",
                 ),
-              ],
+              ),
             ],
+            const SizedBox(height: 20),
           ],
         ),
       ),
