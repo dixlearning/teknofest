@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:teknofest/giris_sorulari/golge_oyunu.dart';
+import 'dart:math';
 
 class WordFillGame extends StatefulWidget {
   const WordFillGame({super.key});
@@ -20,8 +21,7 @@ class _WordFillGameState extends State<WordFillGame> {
   final List<List<String>> correctLetters = [];
   final List<List<String>> userLetters = [];
   final List<Color> colors = [];
-
-  final List<String> alphabet = 'abcçdefgğhıijklmnoöprsştuüvyz'.split('');
+  late List<String> alphabet;
 
   bool _gameOver = false;
 
@@ -34,6 +34,8 @@ class _WordFillGameState extends State<WordFillGame> {
       correctLetters.add(items[i]['answer']!.split(''));
       userLetters.add(List.filled(items[i]['answer']!.length, ''));
     }
+    alphabet = 'abcçdefgğhıijklmnoöprsştuüvyz'.split('');
+    alphabet.shuffle(); // Harfleri karıştır
   }
 
   void _handleGameEnd() {
@@ -57,7 +59,6 @@ class _WordFillGameState extends State<WordFillGame> {
         colors[index] = Colors.red.withOpacity(0.3);
       }
 
-      // Kontrol edilen tüm soruların yanıtları kontrol edildiyse oyun bitişini kontrol et
       bool allChecked = true;
       for (var color in colors) {
         if (color == Colors.transparent) {
@@ -85,14 +86,24 @@ class _WordFillGameState extends State<WordFillGame> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Görselin adını harfleri sıralayarak bul.'),
+        title: const Text('Hoş Geldin Testi!'),
+        backgroundColor: Colors.grey,
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            const SizedBox(height: 16.0),
+            const Text(
+              'Aşağıda bulunan görsellerin adını yazmama yardım et!\n\nHarf havuzundan harfleri yakala ve doğru kutucuğa sürüklemeyi unutma!',
+              style: TextStyle(
+                fontSize: 18,
+                fontWeight: FontWeight.w500,
+                color: Colors.black,
+              ),
+              textAlign: TextAlign.justify,
+            ),
+            const SizedBox(height: 20),
             Expanded(
               child: ListView.builder(
                 itemCount: items.length,
@@ -166,7 +177,11 @@ class _WordFillGameState extends State<WordFillGame> {
                               onPressed: () {
                                 _checkAnswers(index);
                               },
-                              child: const Text('Kontrol Et'),
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor:
+                                    const Color.fromARGB(255, 170, 201, 255),
+                              ),
+                              child: const Text('Onayla'),
                             ),
                           ],
                         ),
@@ -179,8 +194,8 @@ class _WordFillGameState extends State<WordFillGame> {
               ),
             ),
             const Text(
-              'Harf Havuzu (tut-sürükle-bırak)',
-              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+              'Harf Havuzu (Tut-Sürükle-Bırak)',
+              style: TextStyle(fontSize: 15, fontWeight: FontWeight.w500),
               textAlign: TextAlign.center,
             ),
             const SizedBox(height: 8),
