@@ -19,132 +19,131 @@ class _LoginPageState extends State<LoginPage> {
     var width = MediaQuery.of(context).size.width;
 
     return Scaffold(
-      backgroundColor: const Color.fromARGB(224, 255, 255, 255),
+      backgroundColor: Color(0xFFE0F7FA), // Açık turkuaz arka plan rengi
       body: SingleChildScrollView(
         child: Column(
           children: [
             Stack(
               children: [
-                Opacity(
-                  opacity:
-                      0.1, // Saydamlık ayarı (0.0 tamamen saydam, 1.0 tamamen opak)
-                  child: Container(
-                    width: width,
-                    height: height * 0.4, // Oranla boyut ayarlama
-                    decoration: const BoxDecoration(
-                      shape: BoxShape.circle,
-                      image: DecorationImage(
-                        fit: BoxFit
-                            .scaleDown, //buraya uygun bir logo yapılması gerek
-                        image: AssetImage(
-                            "assets/images/giris_ekrani_img/logo.png"),
+                Center(
+                  child: Opacity(
+                    opacity: 0.2, // Saydamlık ayarı
+                    child: Container(
+                      width: width * 0.5, // Logonun genişliği artırıldı
+                      height: width * 0.5, // Logonun yüksekliği artırıldı
+                      margin: EdgeInsets.only(
+                          top: height * 0.2), // Logo biraz aşağı kaydırıldı
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        image: DecorationImage(
+                          fit: BoxFit.cover, // Logo uyumu
+                          image: AssetImage(
+                              "assets/images/giris_ekrani_img/logo.png"),
+                        ),
                       ),
                     ),
                   ),
                 ),
-                Center(
-                  child: Column(
-                    children: [
-                      Container(
-                        height: height * 0.30,
-                        width: width,
-                        decoration: const BoxDecoration(
-                            image: DecorationImage(
-                                fit: BoxFit.cover,
-                                image: AssetImage(
-                                    "assets/images/giris_ekrani_img/denemee.png"))),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 15),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            customSizedBox(),
-                            TextField(
-                              decoration:
-                                  customInputDecoration("Kullanıcı Adı"),
-                              textAlign: TextAlign.center,
-                              style: textfieldStyle(),
-                            ),
-                            customSizedBox(),
-                            TextField(
-                              obscureText: _isObscure,
-                              textAlign: TextAlign.center,
-                              decoration:
-                                  customInputDecoration("Şifre").copyWith(
-                                suffixIcon: buttonOfHide(),
-                              ),
-                              style: textfieldStyle(),
-                            ),
-                            customSizedBox(),
-                            Center(
-                              child: TextButton(
-                                onPressed: () {},
-                                child: Text(
-                                  "Şifremi Unuttum",
-                                  style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      color: const Color.fromARGB(
-                                          255, 42, 83, 141)),
-                                ),
-                              ),
-                            ),
-                            customSizedBox(),
-                            Center(
-                              child: TextButton(
-                                onPressed: () {
-                                  Navigator.push(
-                                    context,
-                                    CupertinoPageRoute(
-                                      builder: (context) =>
-                                          EtkinlikSorulariListScreen(),
-                                    ),
-                                  );
-                                },
-                                child: Container(
-                                  height: 50,
-                                  width: width *
-                                      0.7, // Ekran genişliğine göre boyutlandırma
-                                  margin: EdgeInsets.symmetric(horizontal: 60),
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(50),
-                                    color:
-                                        const Color.fromARGB(255, 29, 143, 181),
-                                  ),
-                                  child: Center(
-                                    child: Text(
-                                      "Giriş Yap",
-                                      style: TextStyle(color: Colors.white),
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ),
-                            customSizedBox(),
-                            Center(
-                              child: TextButton(
-                                onPressed: () {
-                                  Navigator.push(
-                                    context,
-                                    CupertinoPageRoute(
-                                      builder: (context) =>
-                                          RegistrationScreen(),
-                                    ),
-                                  );
-                                },
-                                child: Text(
-                                  "Hesap Oluştur",
-                                  style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      color: const Color.fromARGB(
-                                          255, 43, 112, 224)),
-                                ),
-                              ),
-                            ),
-                          ],
+                Padding(
+                  padding: EdgeInsets.only(
+                      top:
+                          height * 0.25), // İçerikler logonun altında hizalanır
+                  child: Center(
+                    child: Column(
+                      children: [
+                        Container(
+                          height: height * 0.30,
+                          width: width,
+                          decoration: BoxDecoration(
+                              image: DecorationImage(
+                                  fit: BoxFit.cover, image: AssetImage(""))),
                         ),
-                      ),
-                    ],
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 15),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              customSizedBox(),
+                              TextField(
+                                decoration:
+                                    customInputDecoration("Kullanıcı Adı"),
+                                textAlign: TextAlign.center,
+                                style: textfieldStyle(),
+                              ),
+                              customSizedBox(),
+                              TextField(
+                                obscureText: _isObscure,
+                                textAlign: TextAlign.center,
+                                decoration:
+                                    customInputDecoration("Şifre").copyWith(
+                                  suffixIcon: buttonOfHide(),
+                                ),
+                                style: textfieldStyle(),
+                              ),
+                              customSizedBox(),
+                              Center(
+                                child: TextButton(
+                                  onPressed: () {},
+                                  child: Text(
+                                    "Şifremi Unuttum",
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        color: const Color(0xFF00796B)),
+                                  ),
+                                ),
+                              ),
+                              customSizedBox(),
+                              Center(
+                                child: ElevatedButton(
+                                  onPressed: () {
+                                    Navigator.push(
+                                      context,
+                                      CupertinoPageRoute(
+                                        builder: (context) =>
+                                            EtkinlikSorulariListScreen(),
+                                      ),
+                                    );
+                                  },
+                                  style: ElevatedButton.styleFrom(
+                                    backgroundColor:
+                                        const Color(0xFF00796B), // Buton rengi
+                                    padding: EdgeInsets.symmetric(
+                                        horizontal: 80, vertical: 15),
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(30),
+                                    ),
+                                  ),
+                                  child: Text(
+                                    "Giriş Yap",
+                                    style: TextStyle(color: Colors.white),
+                                  ),
+                                ),
+                              ),
+                              customSizedBox(),
+                              Center(
+                                child: TextButton(
+                                  onPressed: () {
+                                    Navigator.push(
+                                      context,
+                                      CupertinoPageRoute(
+                                        builder: (context) =>
+                                            RegistrationScreen(),
+                                      ),
+                                    );
+                                  },
+                                  child: Text(
+                                    "Hesap Oluştur",
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        color: const Color(0xFF00796B)),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
               ],
@@ -157,9 +156,9 @@ class _LoginPageState extends State<LoginPage> {
 
   TextStyle textfieldStyle() {
     return TextStyle(
-      fontSize: 20,
+      fontSize: 18,
       fontWeight: FontWeight.bold,
-      color: const Color.fromARGB(255, 255, 255, 255),
+      color: const Color(0xFF00796B), // Koyu turkuaz renk
     );
   }
 
@@ -183,11 +182,20 @@ class _LoginPageState extends State<LoginPage> {
     return InputDecoration(
       hintText: hintText,
       hintStyle: TextStyle(color: const Color.fromARGB(255, 107, 107, 107)),
-      enabledBorder: const UnderlineInputBorder(
-        borderSide: BorderSide(color: Colors.grey),
+      filled: true,
+      fillColor: Colors.white,
+      contentPadding: EdgeInsets.symmetric(vertical: 15, horizontal: 20),
+      border: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(30),
+        borderSide: BorderSide.none,
       ),
-      focusedBorder: const UnderlineInputBorder(
-        borderSide: BorderSide(color: Colors.grey),
+      focusedBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(30),
+        borderSide: BorderSide(color: Color(0xFF00796B)),
+      ),
+      enabledBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(30),
+        borderSide: BorderSide(color: Color(0xFF00796B)),
       ),
     );
   }

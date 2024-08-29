@@ -178,7 +178,7 @@ class QuizPlayState extends State<QuizPlay>
                   ),
                   const SizedBox(width: 8),
                   const Text(
-                    "Question",
+                    "",
                     style: TextStyle(fontSize: 24, fontWeight: FontWeight.w400),
                   ),
                 ],

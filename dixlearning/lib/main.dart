@@ -18,6 +18,7 @@ import 'package:teknofest/etkinlik_sorulari/disleksi1.dart';
 import 'package:teknofest/etkinlik_sorulari/disleksi2.dart';
 import 'package:teknofest/etkinlik_sorulari/disleksi3.dart';
 import 'package:teknofest/etkinlik_sorulari/disleksi4.dart';
+import 'package:teknofest/giris_sorulari/eksik_hece.dart';
 import 'package:teknofest/giris_sorulari/giris_harf_eslestir_disleksi.dart';
 import 'package:teknofest/giris_sorulari/golge_oyunu.dart';
 import 'package:teknofest/giris_sorulari/gorsel_adi.dart';
@@ -75,26 +76,26 @@ class MyApp extends StatelessWidget {
             const HomePage(),
         'giris_sorulari/golge_oyunu': (context) => const WordShadowMatchGame(),
         'giris_sorulari/gorsel_adi': (context) => const WordFillGame(),
-
+        'giris_sorulari/eksik_hece': (context) => const EksikHeceler(),
         '/game': (context) =>
             const FillMissingLetter(), //ilk harf oyununda hata veriyordu bu satırı ekledim
 
         'giris_sorulari/ilk_harf/game': (context) => const FillMissingLetter(),
-        'giris_sorulari/bd_sorusu.dart': (context) => const QuizPlay(),
+        'giris_sorulari/bd_sorusu': (context) => const QuizPlay(),
         'giris_sorulari/mat_hesaplama': (context) => const HomePage2(),
         'giris_sorulari/sayi_oyunu': (context) => const DiskalkuliEgitimPage(),
 
         //etkinlik sorularının bulunduğu rotalar
         'Disgrafi Soru 1': (context) => const PoemPage(),
         'Disgrafi Soru 2': (context) => const KarisikAylar(),
-        'Disgrafi Soru 3': (context) => const ColorNamingGame(),
+        'Disgrafi Soru 3': (context) => CumleOlusturma(),
         'Disgrafi Soru 4': (context) => const KarisikRenkler(),
         'Disgrafi Soru 5': (context) => const StartScreen(),
         'Disgrafi Soru 6': (context) => const EmojiQuiz(),
         'Diskalkuli Soru 1': (context) => const ToplamaSayfasi(),
         'Diskalkuli Soru 2': (context) => const CikarmaSayfasi(),
         'Diskalkuli Soru 3': (context) => const MathQuiz(),
-        'Diskalkuli Soru 4': (context) => const MathActivity(),
+        'Diskalkuli Soru 4': (context) => MevsimEslestirmeScreen(),
         'Diskalkuli Soru 5': (context) => const YansimaIsaretlemeOyunu(),
         'Diskalkuli Soru 6': (context) => const CountingGame(),
         'Diskalkuli Soru 7': (context) => const PuzzleGameScreen(),
