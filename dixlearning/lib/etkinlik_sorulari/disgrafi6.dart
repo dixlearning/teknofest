@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'dart:math';
 
 class EmojiQuiz extends StatefulWidget {
   const EmojiQuiz({super.key});
@@ -85,7 +84,7 @@ class _EmojiQuizState extends State<EmojiQuiz> {
     } else {
       setState(() {
         _quizCompleted = true;
-        _feedbackMessage = 'Tebrikler! Tüm emojileri tamamladınız.\n'
+        _feedbackMessage = 'Tebrikler! Tümünü tamamladın.\n'
             'Doğru: $_correctCount, Yanlış: $_wrongCount';
       });
     }
@@ -95,21 +94,26 @@ class _EmojiQuizState extends State<EmojiQuiz> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Görseldeki Ne?'),
+        title: Text(
+          'Görseldeki Ne?',
+          style: TextStyle(fontSize: 24, fontWeight: FontWeight.w600),
+        ),
+        backgroundColor: Colors.teal,
       ),
-      body: _quizCompleted
-          ? Center(
+      body: Container(
+        color: Colors.white,
+        child: Column(
+          children: [
+            Padding(
+              padding: const EdgeInsets.all(16.0),
               child: Text(
-                'Tebrikler! \n'
-                'Tüm soruları tamamladınız.\n'
-                'Doğru: $_correctCount, Yanlış: $_wrongCount',
-                style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-                textAlign: TextAlign.center,
+                'Görseldeki nesnenin adını verilen kutucuğa yazalım.',
+                style: TextStyle(fontSize: 20, fontWeight: FontWeight.w500),
+                textAlign: TextAlign.justify,
               ),
-            )
-          : SingleChildScrollView(
-              child: Padding(
-                padding: const EdgeInsets.all(16.0),
+            ),
+            Expanded(
+              child: Center(
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
@@ -117,17 +121,28 @@ class _EmojiQuizState extends State<EmojiQuiz> {
                       _shuffledEmojis[_currentIndex]['emoji']!,
                       style: TextStyle(fontSize: 100),
                     ),
-                    TextField(
-                      controller: _controller,
-                      decoration: InputDecoration(
-                        labelText: 'Görseldeki nesnenin adını yazalım.',
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 40.0),
+                      child: TextField(
+                        controller: _controller,
+                        decoration: InputDecoration(
+                          labelText: 'Buraya yazın...',
+                          border: OutlineInputBorder(),
+                        ),
+                        onSubmitted: (_) => _checkAnswer(),
+                        textAlign: TextAlign.center,
+                        style: TextStyle(fontSize: 20),
                       ),
-                      onSubmitted: (_) => _checkAnswer(),
                     ),
                     SizedBox(height: 20),
                     if (!_showAnswerButton && !_showNextButton)
                       ElevatedButton(
                         onPressed: _checkAnswer,
+                        style: ElevatedButton.styleFrom(
+                          padding: EdgeInsets.symmetric(
+                              horizontal: 30, vertical: 15),
+                          textStyle: TextStyle(fontSize: 18),
+                        ),
                         child: Text('Cevabı Kontrol Et'),
                       ),
                     SizedBox(height: 20),
@@ -135,6 +150,7 @@ class _EmojiQuizState extends State<EmojiQuiz> {
                       _feedbackMessage,
                       style: TextStyle(
                         fontSize: 24,
+                        fontWeight: FontWeight.bold,
                         color: _isCorrectAnswer ? Colors.green : Colors.red,
                       ),
                       textAlign: TextAlign.center,
@@ -143,17 +159,30 @@ class _EmojiQuizState extends State<EmojiQuiz> {
                     if (_showAnswerButton)
                       ElevatedButton(
                         onPressed: _showCorrectAnswer,
+                        style: ElevatedButton.styleFrom(
+                          padding: EdgeInsets.symmetric(
+                              horizontal: 30, vertical: 15),
+                          textStyle: TextStyle(fontSize: 18),
+                        ),
                         child: Text('Cevabı Görüntüle'),
                       ),
                     if (_showNextButton)
                       ElevatedButton(
                         onPressed: _nextQuestion,
-                        child: Text('Sıradaki Soruya Geç'),
+                        style: ElevatedButton.styleFrom(
+                          padding: EdgeInsets.symmetric(
+                              horizontal: 30, vertical: 15),
+                          textStyle: TextStyle(fontSize: 18),
+                        ),
+                        child: Text('Sıradaki Soruya Geç!'),
                       ),
                   ],
                 ),
               ),
             ),
+          ],
+        ),
+      ),
     );
   }
 }
