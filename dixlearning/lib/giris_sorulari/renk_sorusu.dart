@@ -35,7 +35,9 @@ class _ColorNamingGameState extends State<ColorNamingGame> {
 
   void checkAnswer(int index) {
     setState(() {
-      if (userInputs[index]?.toLowerCase() == colorBoxes[index]['name']) {
+      // Girilen değerin küçük harfe çevrilmiş hali ile karşılaştırma yapılır
+      if (userInputs[index]?.trim().toLowerCase() ==
+          colorBoxes[index]['name']) {
         correctCount++;
       } else {
         incorrectCount++;
@@ -50,7 +52,7 @@ class _ColorNamingGameState extends State<ColorNamingGame> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: const Text("Sonuçlar"),
+          title: const Text("Sonuçlar:"),
           content: Text("Doğru: $correctCount\nYanlış: $incorrectCount"),
           actions: [
             TextButton(
@@ -79,7 +81,18 @@ class _ColorNamingGameState extends State<ColorNamingGame> {
       body: Padding(
         padding: const EdgeInsets.all(8.0),
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            const Padding(
+              padding: EdgeInsets.only(bottom: 16.0),
+              child: Text(
+                "Kutuların rengini verilen boşluğa yaz.",
+                style: TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.w500,
+                ),
+              ),
+            ),
             Expanded(
               child: GridView.builder(
                 gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
@@ -94,7 +107,7 @@ class _ColorNamingGameState extends State<ColorNamingGame> {
                   return Padding(
                     padding: const EdgeInsets.all(4.0),
                     child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
                         Container(
                           height: 70, // Kutucuk yüksekliği
@@ -113,11 +126,13 @@ class _ColorNamingGameState extends State<ColorNamingGame> {
                               hintText: 'Renk adı',
                               suffixIcon: showResults && checked[index] == true
                                   ? Icon(
-                                      userInputs[index]?.toLowerCase() ==
+                                      userInputs[index]?.trim().toLowerCase() ==
                                               colorBoxes[index]['name']
                                           ? Icons.check
                                           : Icons.close,
-                                      color: userInputs[index]?.toLowerCase() ==
+                                      color: userInputs[index]
+                                                  ?.trim()
+                                                  .toLowerCase() ==
                                               colorBoxes[index]['name']
                                           ? Colors.green
                                           : Colors.red,
@@ -130,15 +145,16 @@ class _ColorNamingGameState extends State<ColorNamingGame> {
                           Padding(
                             padding: const EdgeInsets.only(top: 8.0),
                             child: Text(
-                              userInputs[index]?.toLowerCase() ==
+                              userInputs[index]?.trim().toLowerCase() ==
                                       colorBoxes[index]['name']
                                   ? "Doğru!"
                                   : "Doğru: ${colorBoxes[index]['name']}",
                               style: TextStyle(
-                                color: userInputs[index]?.toLowerCase() ==
-                                        colorBoxes[index]['name']
-                                    ? Colors.green
-                                    : Colors.red,
+                                color:
+                                    userInputs[index]?.trim().toLowerCase() ==
+                                            colorBoxes[index]['name']
+                                        ? Colors.green
+                                        : Colors.red,
                               ),
                             ),
                           ),
@@ -146,7 +162,7 @@ class _ColorNamingGameState extends State<ColorNamingGame> {
                           onPressed: checked[index] == true
                               ? null
                               : () => checkAnswer(index),
-                          child: const Text('Kontrol Et'),
+                          child: const Text('Kontrol Et!'),
                         ),
                       ],
                     ),
@@ -155,13 +171,15 @@ class _ColorNamingGameState extends State<ColorNamingGame> {
               ),
             ),
             const SizedBox(height: 10), // Biraz boşluk ekleyin
-            ElevatedButton(
-              onPressed: () {
-                if (checked.values.every((value) => value)) {
-                  _showResultDialog();
-                }
-              },
-              child: const Text('Sonuçları Göster'),
+            Center(
+              child: ElevatedButton(
+                onPressed: () {
+                  if (checked.values.every((value) => value)) {
+                    _showResultDialog();
+                  }
+                },
+                child: const Text('Sonuçları Göster!'),
+              ),
             ),
           ],
         ),
@@ -171,7 +189,7 @@ class _ColorNamingGameState extends State<ColorNamingGame> {
         title: const FittedBox(
           fit: BoxFit.scaleDown,
           child: Text(
-            'Kutucuğun rengini altına yazın.',
+            'Hoş Geldin Testi!',
           ),
         ),
       ),
