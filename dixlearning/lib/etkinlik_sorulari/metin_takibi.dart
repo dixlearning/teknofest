@@ -116,15 +116,15 @@ class _PointerFollowPageState extends State<PointerFollowPage>
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Okuma Zamanı'),
+        title: Text('Okuma Zamanı!'),
       ),
       body: Container(
-        color: Colors.grey[200],
+        color: Colors.lightGreen[100],
         padding: const EdgeInsets.all(16.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
-            SizedBox(height: 40),
+            SizedBox(height: 20),
             Container(
               padding: EdgeInsets.all(8.0),
               margin: EdgeInsets.only(bottom: 24.0),
@@ -148,7 +148,7 @@ class _PointerFollowPageState extends State<PointerFollowPage>
               ),
             ),
             Text(
-              'İşaretçiyi takip ederek verilen metni okuyunuz.',
+              'İşaretçiyi takip ederek verilen metni okuyalım.',
               style: TextStyle(fontSize: 20, color: Colors.black),
             ),
             SizedBox(height: 24),
@@ -176,11 +176,11 @@ class _PointerFollowPageState extends State<PointerFollowPage>
                   child: Text('Yavaş Oku'),
                 ),
                 ElevatedButton(
-                  onPressed: () => _setSpeed(80),
+                  onPressed: () => _setSpeed(90),
                   child: Text('Orta Hızda Oku'),
                 ),
                 ElevatedButton(
-                  onPressed: () => _setSpeed(30),
+                  onPressed: () => _setSpeed(50),
                   child: Text('Hızlı Oku'),
                 ),
               ],
@@ -188,7 +188,7 @@ class _PointerFollowPageState extends State<PointerFollowPage>
             SizedBox(height: 24),
             ElevatedButton(
               onPressed: _onContinuePressed,
-              child: Text('Devam Et'),
+              child: Text('Sıradaki İçin Tıkla!'),
             ),
           ],
         ),
