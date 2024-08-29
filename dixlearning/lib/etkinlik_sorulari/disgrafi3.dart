@@ -10,9 +10,9 @@ class _CumleOlusturmaState extends State<CumleOlusturma> {
     'reçeteye / yazdı / Doktor / ilaç': 'Doktor reçeteye ilaç yazdı',
     'verimli / okumakla / zaman / geçiyor / Dergi':
         'Dergi okumakla zaman verimli geçiyor',
-    'Izgaradan / aldı / etleri / maşayla': 'Izgaradan maşayla etleri aldı',
-    'Okullar / oldu / tatil / pazartesi': 'Okullar pazartesi tatil oldu',
-    'salata / Jale / yaptı / nohutlu': 'Jale nohutlu salata yaptı'
+    'Izgaradan / aldı. / etleri / maşayla': 'Izgaradan maşayla etleri aldı',
+    'Okullar / oldu. / tatil / pazartesi': 'Okullar pazartesi tatil oldu',
+    'salata / Jale / yaptı. / nohutlu': 'Jale nohutlu salata yaptı'
   };
 
   final Map<String, String> userInputs = {};
@@ -37,7 +37,7 @@ class _CumleOlusturmaState extends State<CumleOlusturma> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Cümle Oluşturma')),
+      appBar: AppBar(title: const Text('Cümle Kuralım!')),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16.0),
         child: Column(
