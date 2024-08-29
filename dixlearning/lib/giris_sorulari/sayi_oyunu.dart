@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-
 import 'package:teknofest/giris_sorulari/mat_hesaplama.dart'; // Matematik oyunu ekranını import et
 
 class DiskalkuliEgitimPage extends StatefulWidget {
@@ -11,16 +10,14 @@ class DiskalkuliEgitimPage extends StatefulWidget {
   DiskalkuliEgitimPageState createState() => DiskalkuliEgitimPageState();
 }
 
-bool _gameOver = false;
-
 class DiskalkuliEgitimPageState extends State<DiskalkuliEgitimPage> {
   final List<TextEditingController> _controllers =
       List.generate(8, (index) => TextEditingController());
 
   final List<int> correctCounts = [2, 5, 4, 7, 6, 9, 3, 8];
+  final List<Color?> _fieldColors = List.generate(8, (index) => null);
 
   void _handleGameEnd() {
-    _gameOver = true;
     if (widget.onComplete != null) {
       widget.onComplete!(); // Callback'i çağır
     }
@@ -35,85 +32,102 @@ class DiskalkuliEgitimPageState extends State<DiskalkuliEgitimPage> {
   }
 
   void verifyCounts() {
-    int correctAnswers = 0;
-    int incorrectAnswers = 0;
-
     for (int i = 0; i < _controllers.length; i++) {
       if (int.tryParse(_controllers[i].text) == correctCounts[i]) {
-        correctAnswers++;
+        _fieldColors[i] = Colors.green[100];
       } else {
-        incorrectAnswers++;
+        _fieldColors[i] = Colors.red[100];
       }
     }
 
-    // Sonuçları göster
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: const Text("Sonuçlar"),
-          content: Text(
-              "Doğru sayısı: $correctAnswers\nYanlış sayısı: $incorrectAnswers"),
-          actions: [
-            ElevatedButton(
-              onPressed: () {
-                Navigator.of(context).pop();
-                _handleGameEnd();
-              },
-              child: const Text("Tamam"),
-            ),
-          ],
-        );
-      },
-    );
+    setState(() {}); // Renklerin güncellenmesi için
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Aşağıdaki nesnelerin sayısını giriniz.'),
+        title: const Text('Hoş Geldin Testi!'),
+        backgroundColor: Colors.grey, // AppBar rengini gri yaptık
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: SingleChildScrollView(
           child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              EtkinlikSatiri(
-                image1Path: 'assets/images/sayi_oyunu_img/balik1.png',
-                controller: _controllers[0],
+              const Padding(
+                padding: EdgeInsets.only(bottom: 16.0),
+                child: Text(
+                  "Görseldekilerin kaç adet olduklarını bul ve boş bırakılan yerlere sayılarını yaz.",
+                  style: TextStyle(fontSize: 20, color: Colors.black87),
+                ),
               ),
-              EtkinlikSatiri(
-                image1Path: 'assets/images/sayi_oyunu_img/balik2.png',
-                controller: _controllers[1],
+              const SizedBox(height: 16), // Görseller arasında boşluk bırakıldı
+              Column(
+                children: [
+                  EtkinlikSatiri(
+                    image1Path: 'assets/images/sayi_oyunu_img/balik1.png',
+                    controller: _controllers[0],
+                    fieldColor: _fieldColors[0],
+                  ),
+                  const SizedBox(
+                      height: 16), // Görseller arasında boşluk bırakıldı
+                  EtkinlikSatiri(
+                    image1Path: 'assets/images/sayi_oyunu_img/balik2.png',
+                    controller: _controllers[1],
+                    fieldColor: _fieldColors[1],
+                  ),
+                  const SizedBox(
+                      height: 16), // Görseller arasında boşluk bırakıldı
+                  EtkinlikSatiri(
+                    image1Path: 'assets/images/sayi_oyunu_img/tavsan1.png',
+                    controller: _controllers[2],
+                    fieldColor: _fieldColors[2],
+                  ),
+                  const SizedBox(
+                      height: 16), // Görseller arasında boşluk bırakıldı
+                  EtkinlikSatiri(
+                    image1Path: 'assets/images/sayi_oyunu_img/tavsan2.png',
+                    controller: _controllers[3],
+                    fieldColor: _fieldColors[3],
+                  ),
+                  const SizedBox(
+                      height: 16), // Görseller arasında boşluk bırakıldı
+                  EtkinlikSatiri(
+                    image1Path: 'assets/images/sayi_oyunu_img/havuc1.png',
+                    controller: _controllers[4],
+                    fieldColor: _fieldColors[4],
+                  ),
+                  const SizedBox(
+                      height: 16), // Görseller arasında boşluk bırakıldı
+                  EtkinlikSatiri(
+                    image1Path: 'assets/images/sayi_oyunu_img/havuc2.png',
+                    controller: _controllers[5],
+                    fieldColor: _fieldColors[5],
+                  ),
+                  const SizedBox(
+                      height: 16), // Görseller arasında boşluk bırakıldı
+                  EtkinlikSatiri(
+                    image1Path: 'assets/images/sayi_oyunu_img/cicek1.png',
+                    controller: _controllers[6],
+                    fieldColor: _fieldColors[6],
+                  ),
+                  const SizedBox(
+                      height: 16), // Görseller arasında boşluk bırakıldı
+                  EtkinlikSatiri(
+                    image1Path: 'assets/images/sayi_oyunu_img/cicek2.png',
+                    controller: _controllers[7],
+                    fieldColor: _fieldColors[7],
+                  ),
+                ],
               ),
-              EtkinlikSatiri(
-                image1Path: 'assets/images/sayi_oyunu_img/tavsan1.png',
-                controller: _controllers[2],
-              ),
-              EtkinlikSatiri(
-                image1Path: 'assets/images/sayi_oyunu_img/tavsan2.png',
-                controller: _controllers[3],
-              ),
-              EtkinlikSatiri(
-                image1Path: 'assets/images/sayi_oyunu_img/havuc1.png',
-                controller: _controllers[4],
-              ),
-              EtkinlikSatiri(
-                image1Path: 'assets/images/sayi_oyunu_img/havuc2.png',
-                controller: _controllers[5],
-              ),
-              EtkinlikSatiri(
-                image1Path: 'assets/images/sayi_oyunu_img/cicek1.png',
-                controller: _controllers[6],
-              ),
-              EtkinlikSatiri(
-                image1Path: 'assets/images/sayi_oyunu_img/cicek2.png',
-                controller: _controllers[7],
-              ),
-              ElevatedButton(
-                onPressed: verifyCounts,
-                child: const Text('Doğrula'),
+              const SizedBox(height: 32),
+              Center(
+                child: ElevatedButton(
+                  onPressed: verifyCounts,
+                  child: const Text('Doğrula'),
+                ),
               ),
             ],
           ),
@@ -126,27 +140,36 @@ class DiskalkuliEgitimPageState extends State<DiskalkuliEgitimPage> {
 class EtkinlikSatiri extends StatelessWidget {
   final String image1Path;
   final TextEditingController controller;
+  final Color? fieldColor;
 
   const EtkinlikSatiri({
     required this.image1Path,
     required this.controller,
+    this.fieldColor,
     super.key,
   });
 
   @override
   Widget build(BuildContext context) {
     return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceAround,
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         EtkinlikFotografi(imagePath: image1Path),
         SizedBox(
           width: 100,
           child: TextField(
             controller: controller,
-            decoration: const InputDecoration(
-              labelText: 'Nesne Sayısı',
+            decoration: InputDecoration(
+              labelText: 'Nesne Sayısı:',
+              filled: true,
+              fillColor: fieldColor,
             ),
             keyboardType: TextInputType.number,
+            onChanged: (value) {
+              if (int.tryParse(value) == null || value.isEmpty) {
+                controller.text = '';
+              }
+            },
           ),
         ),
       ],
