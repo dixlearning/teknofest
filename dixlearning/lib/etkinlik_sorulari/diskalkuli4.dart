@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -15,7 +16,7 @@ class MevsimEslestirmeScreen extends StatefulWidget {
 }
 
 class _MevsimEslestirmeScreenState extends State<MevsimEslestirmeScreen> {
-  final List<String> mevsimler = ['İlkbahar', 'Yaz', 'Sonbahar', 'Kış'];
+  final List<String> mevsimler = ['Kış', 'Sonbahar', 'İlkbahar', 'Yaz']; // İstenilen sıralama
   final Map<String, String> dogruEslestirme = {
     'İlkbahar': '🌸',
     'Yaz': '🍦',
@@ -30,8 +31,7 @@ class _MevsimEslestirmeScreenState extends State<MevsimEslestirmeScreen> {
   final Set<String> dogruEslestirilenler = {}; // Doğru eşleşen mevsimlerin seti
 
   void _onMevsimTapped(String mevsim) {
-    if (!dogruEslestirilenler.contains(mevsim)) {
-      // Eğer mevsim doğru eşleşmemişse işlem yapılabilir
+    if (!dogruEslestirilenler.contains(mevsim)) { // Eğer mevsim doğru eşleşmemişse işlem yapılabilir
       setState(() {
         secilenMevsim = mevsim;
         _kontrolEt();
@@ -40,9 +40,7 @@ class _MevsimEslestirmeScreenState extends State<MevsimEslestirmeScreen> {
   }
 
   void _onGorselTapped(String gorsel) {
-    if (!gorselRenkleri.containsKey(gorsel) ||
-        gorselRenkleri[gorsel] != Colors.green) {
-      // Eğer görsel doğru eşleşmemişse işlem yapılabilir
+    if (!gorselRenkleri.containsKey(gorsel) || gorselRenkleri[gorsel] != Colors.green) { // Eğer görsel doğru eşleşmemişse işlem yapılabilir
       setState(() {
         secilenGorsel = gorsel;
         _kontrolEt();
@@ -56,8 +54,7 @@ class _MevsimEslestirmeScreenState extends State<MevsimEslestirmeScreen> {
         // Doğru eşleşme -> Yeşil renk ve değiştirilemez hale getir
         mevsimRenkleri[secilenMevsim] = Colors.green;
         gorselRenkleri[secilenGorsel] = Colors.green;
-        dogruEslestirilenler
-            .add(secilenMevsim); // Doğru eşleşen mevsimi set'e ekle
+        dogruEslestirilenler.add(secilenMevsim); // Doğru eşleşen mevsimi set'e ekle
       } else {
         // Yanlış eşleşme -> Kırmızı renk (Sadece tıklanan mevsim ve görsel)
         mevsimRenkleri[secilenMevsim] = Colors.red;
@@ -73,18 +70,18 @@ class _MevsimEslestirmeScreenState extends State<MevsimEslestirmeScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Mevsim Eşleme'),
+        title: Text('Mevsim Eşleme'),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Text(
+            Text(
               'Mevsimleri uygun resimlerle eşleyiniz.',
               style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
             ),
-            const SizedBox(height: 20),
+            SizedBox(height: 20), // Başlık ile mevsimler arasında boşluk
             Expanded(
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -95,7 +92,7 @@ class _MevsimEslestirmeScreenState extends State<MevsimEslestirmeScreen> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: mevsimler.map((mevsim) {
                         return Container(
-                          margin: const EdgeInsets.symmetric(vertical: 24.0),
+                          margin: EdgeInsets.symmetric(vertical: 24.0), // Aralığı artırdık
                           child: GestureDetector(
                             onTap: () => _onMevsimTapped(mevsim),
                             child: Text(
@@ -134,17 +131,15 @@ class _MevsimEslestirmeScreenState extends State<MevsimEslestirmeScreen> {
     return GestureDetector(
       onTap: () => _onGorselTapped(gorsel),
       child: Container(
-        margin: const EdgeInsets.symmetric(vertical: 16.0),
-        padding: const EdgeInsets.all(16.0),
+        margin: EdgeInsets.symmetric(vertical: 16.0),
+        padding: EdgeInsets.all(16.0),
         decoration: BoxDecoration(
-          color: gorselRenkleri.containsKey(gorsel)
-              ? gorselRenkleri[gorsel]
-              : Colors.transparent,
+          color: gorselRenkleri.containsKey(gorsel) ? gorselRenkleri[gorsel] : Colors.transparent,
           borderRadius: BorderRadius.circular(8.0),
         ),
         child: Text(
           gorsel,
-          style: const TextStyle(
+          style: TextStyle(
             fontSize: 48,
             color: Colors.black,
           ),
