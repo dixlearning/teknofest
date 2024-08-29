@@ -14,7 +14,7 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
       ),
       home:
-          PointerFollowPage(), // Scaffold'ı home parametresine yerleştiriyoruz
+      PointerFollowPage(), // Scaffold'ı home parametresine yerleştiriyoruz
       routes: {
         '/etkinlik_sorulari': (context) => EtkinlikSorulariScreen(),
       },
@@ -59,6 +59,18 @@ class _PointerFollowPageState extends State<PointerFollowPage>
         "bu kadar altın getirmişler, onun için dövüşüyorum,” demiş. Parayı toplayarak içeri almışlar. "
         "Keloğlan bir mağaza açıp ticarete başlamış. O tek nohudu sakladığı yerden çıkartarak “Beni zengin eden "
         "bu nohuttur” deyip ağzına atmış. Yiyip içip muradına geçmiş.",
+    "Temel aldığı bir daktiloyu bozuk diye geri götürmüş. Satıcı: \"Neresi bozuk dün aldığında sağlamdı."
+        "Temel:\"İki tane 'a' yok, 'saat' yazamıyorum",
+    "Temel ile Dursun ormanda yürüyorlar. Bir ara Temel Dursun'a sesleniyor:\n "
+    "-Dursun ormanın güzelliğine bak! \nDursun:\n"
+        "-Ağaçlardan göremiyorum.\n",
+    "Günün birinde Hoca Efendi pazara gitmek için eşeğine binip yola koyulmuş."
+        "Bir süre gittikten sonra eşek huysuzlanmış ve hoplayıp zıplamaya başlamış."
+        "Derken Nasreddin Hoca da eşekten düşüvermiş. Düşmüş düşmesine de çevresine toplanan çocuklar"
+        "toplu hâlde bağırmaya başlamışlar:\n “Nasreddin Hoca eşekten düştü, Nasreddin Hoca eşekten düştü.”\n"
+        "Hoca, şöyle bir sağına soluna baktıktan sonra büyüklerden kimselerin olmadığını görünce eşe dosta rezil olmamak için;\n"
+        "“Çocuklar, eşekten düşmedim, ben zaten inecektim.” deyivermiş."
+
   ];
 
   int _currentIndex = 0;
@@ -74,11 +86,11 @@ class _PointerFollowPageState extends State<PointerFollowPage>
       vsync: this,
       duration: Duration(seconds: 80), // Başlangıç hızı
     )..addListener(() {
-        setState(() {
-          _currentIndex =
-              (_animation.value * stories[_currentStoryIndex].length).round();
-        });
+      setState(() {
+        _currentIndex =
+            (_animation.value * stories[_currentStoryIndex].length).round();
       });
+    });
 
     _animation = Tween<double>(begin: 0, end: 1).animate(_controller);
   }
@@ -137,7 +149,13 @@ class _PointerFollowPageState extends State<PointerFollowPage>
                   Text(
                     _currentStoryIndex == 0
                         ? 'Nasreddin Hoca Fıkrası'
-                        : 'Keloğlan Masalı',
+                        : _currentStoryIndex == 1
+                        ? 'Keloğlan Masalı'
+                        : _currentStoryIndex == 2
+                        ? 'Daktilo Fıkrası'
+                        : _currentStoryIndex == 3
+                        ? 'Dursun Ormanda'
+                        : 'Eşekten Düşen Hoca Fıkrası',
                     style: TextStyle(
                       fontSize: 24,
                       fontWeight: FontWeight.bold,
@@ -161,7 +179,7 @@ class _PointerFollowPageState extends State<PointerFollowPage>
                     text: TextSpan(
                       style: TextStyle(fontSize: 24, color: Colors.black),
                       children:
-                          _getHighlightedText(stories[_currentStoryIndex]),
+                      _getHighlightedText(stories[_currentStoryIndex]),
                     ),
                   ),
                 ),
@@ -224,7 +242,7 @@ class _PointerFollowPageState extends State<PointerFollowPage>
         style: TextStyle(
           color: color,
           backgroundColor:
-              idx < _currentIndex ? Colors.yellow[100] : Colors.transparent,
+          idx < _currentIndex ? Colors.yellow[100] : Colors.transparent,
         ),
       );
     }).toList();
