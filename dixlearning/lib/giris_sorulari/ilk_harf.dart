@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
 import 'dart:math';
-import 'package:teknofest/giris_sorulari/gorsel_adi.dart';
 
 void main() {
   runApp(MaterialApp(
-    home:
-        FillMissingLetter(), // Giriş ekranı kaldırıldı, doğrudan oyun açılıyor.
+    home: FillMissingLetter(),
   ));
 }
 
@@ -26,35 +24,31 @@ class _FillMissingLetterState extends State<FillMissingLetter> {
     {"word": "bulut", "imageUrl": "assets/images/ilk_harf_img/bulut.jpg"},
   ];
 
-  List<Map<String, String>> remainingWords =
-      []; // Kullanılmamış kelimeler listesi
+  List<Map<String, String>> remainingWords = [];
   late Map<String, String> currentWordData;
   final TextEditingController _controller = TextEditingController();
   bool isCorrect = false;
   bool isAnswered = false;
   bool _gameOver = false;
+  int correctAnswers = 0;
+  int totalQuestions = 0;
 
   @override
   void initState() {
     super.initState();
-    remainingWords = List.from(wordData); // Kopyasını alıyoruz
-    getNextWord(); // İlk kelimeyi seçiyoruz
+    remainingWords = List.from(wordData);
+    totalQuestions = wordData.length;
+    getNextWord();
   }
 
   void getNextWord() {
     setState(() {
       if (remainingWords.isEmpty) {
         _gameOver = true;
-        // Oyun bittiğinde görsel adını gösteren sayfaya geçiş yap
-        Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => const WordFillGame(),
-            ));
       } else {
         int randomIndex = Random().nextInt(remainingWords.length);
         currentWordData = remainingWords[randomIndex];
-        remainingWords.removeAt(randomIndex); // Seçilen kelimeyi listeden çıkar
+        remainingWords.removeAt(randomIndex);
         _controller.clear();
         isAnswered = false;
         isCorrect = false;
@@ -66,26 +60,30 @@ class _FillMissingLetterState extends State<FillMissingLetter> {
     setState(() {
       isAnswered = true;
       isCorrect = _controller.text.toLowerCase() == currentWordData["word"]![0];
+      if (isCorrect) {
+        correctAnswers++;
+      }
     });
 
-    if (isCorrect) {
-      Future.delayed(const Duration(seconds: 1), () {
-        getNextWord();
-      });
-    }
+    Future.delayed(const Duration(seconds: 2), () {
+      getNextWord();
+    });
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Boşluğa doğru harfi yaz."),
+        title: const Text("Hoş Geldin Testi!"),
+        backgroundColor: Colors.grey,
       ),
       body: _gameOver
           ? Center(
-              child: const Text(
-                "Oyun Bitti!",
-                style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
+              child: Text(
+                "Oyun Bitti! $correctAnswers / $totalQuestions doğru.",
+                style:
+                    const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+                textAlign: TextAlign.center,
               ),
             )
           : SingleChildScrollView(
@@ -93,57 +91,75 @@ class _FillMissingLetterState extends State<FillMissingLetter> {
                 padding: const EdgeInsets.all(16.0),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
                   children: <Widget>[
                     const Text(
-                      "Boşluğa doğru harfi yaz:",
-                      style: TextStyle(fontSize: 20),
+                      "Eksik harfi bul ve boşluğu doldur.",
+                      style:
+                          TextStyle(fontSize: 24, fontWeight: FontWeight.w500),
+                      textAlign: TextAlign.center,
                     ),
                     const SizedBox(height: 20),
-                    Image.asset(
-                      currentWordData["imageUrl"]!,
-                      width: 200,
-                      height: 200,
-                      fit: BoxFit.cover,
+                    Center(
+                      child: Image.asset(
+                        currentWordData["imageUrl"]!,
+                        width: 200, // Resim boyutu küçültüldü
+                        height: 200,
+                        fit: BoxFit.cover,
+                      ),
                     ),
                     const SizedBox(height: 20),
                     Text(
                       "_${currentWordData["word"]!.substring(1)}",
                       style: const TextStyle(
-                          fontSize: 30, fontWeight: FontWeight.bold),
+                          fontSize: 36, fontWeight: FontWeight.bold),
+                      textAlign: TextAlign.center,
                     ),
                     const SizedBox(height: 20),
                     TextField(
                       controller: _controller,
                       decoration: const InputDecoration(
                         border: OutlineInputBorder(),
-                        labelText: "Eksik harfi yaz",
+                        labelText: "Buraya yaz.",
+                        labelStyle: TextStyle(fontSize: 18),
                       ),
                       maxLength: 1,
                       textCapitalization: TextCapitalization.none,
                       textAlign: TextAlign.center,
-                      style: const TextStyle(fontSize: 24),
+                      style: const TextStyle(fontSize: 30),
                       enabled: !isAnswered || isCorrect,
                     ),
                     const SizedBox(height: 20),
                     ElevatedButton(
-                      onPressed: checkAnswer,
+                      onPressed: isAnswered ? null : checkAnswer,
+                      style: ElevatedButton.styleFrom(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 24, vertical: 12),
+                        textStyle: const TextStyle(fontSize: 24),
+                      ),
                       child: const Text("Onayla"),
                     ),
-                    if (isAnswered && !isCorrect)
-                      ElevatedButton(
-                        onPressed: getNextWord,
-                        child: const Text("Sıradaki Soru"),
-                      ),
-                    if (isAnswered && !isCorrect)
+                    if (isAnswered)
                       Padding(
-                        padding: const EdgeInsets.all(16.0),
+                        padding: const EdgeInsets.symmetric(vertical: 20.0),
                         child: Text(
-                          "Yanlış! Doğru harf: '${currentWordData["word"]![0]}'.",
-                          style: const TextStyle(
+                          isCorrect ? "Doğru!" : "Dikkat et!",
+                          style: TextStyle(
                             fontSize: 24,
-                            color: Colors.red,
+                            color: isCorrect ? Colors.green : Colors.red,
+                            fontWeight: FontWeight.bold,
                           ),
+                          textAlign: TextAlign.center,
                         ),
+                      ),
+                    if (isAnswered)
+                      Text(
+                        "Cevap: ${currentWordData["word"]!}.",
+                        style: const TextStyle(
+                          fontSize: 20,
+                          color: Colors.black54,
+                        ),
+                        textAlign: TextAlign.center,
                       ),
                   ],
                 ),
