@@ -29,8 +29,6 @@ class _WordShadowMatchGameState extends State<WordShadowMatchGame> {
   String? selectedWord;
   String? selectedShadow;
   final Map<String, String> matches = {};
-  bool _gameOver = false;
-
   @override
   void initState() {
     super.initState();
@@ -56,7 +54,6 @@ class _WordShadowMatchGameState extends State<WordShadowMatchGame> {
   }
 
   void _handleGameEnd() {
-    _gameOver = true;
     Navigator.pushReplacement(
       context,
       MaterialPageRoute(
@@ -93,62 +90,89 @@ class _WordShadowMatchGameState extends State<WordShadowMatchGame> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Kelimeleri Gölgeleriyle Eşleştirme'),
+        title: const Text('Hoş Geldin Testi!'),
+        backgroundColor: Colors.grey,
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
+            // Başlık Metni
+            Text(
+              'Kelimeleri gölgeleriyle eşleştir.',
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                fontSize: 24,
+                fontWeight: FontWeight.w600,
+                color: Colors.deepPurple,
+              ),
+            ),
+            const SizedBox(height: 20),
+            // Kelimeler ve Gölge Resimleri
             Expanded(
               child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: List.generate(words.length, (index) {
                   String word = words[index];
                   String shadow = shuffledShadowImages[index];
-                  return Row(
-                    children: [
-                      Expanded(
-                        child: GestureDetector(
-                          onTap: () => selectWord(word),
-                          child: Container(
-                            padding: const EdgeInsets.all(8.0),
-                            margin: const EdgeInsets.symmetric(vertical: 4.0),
-                            color: matches[word] == 'wrong'
-                                ? Colors.red
-                                : (matches[word] != null
-                                    ? Colors.green
-                                    : (selectedWord == word
-                                        ? Colors.blue
-                                        : Colors.grey[300])),
+                  return Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 8.0),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        // Kelime Butonu
+                        Container(
+                          width: 150,
+                          height: 60,
+                          margin: const EdgeInsets.symmetric(horizontal: 8.0),
+                          child: ElevatedButton(
+                            onPressed: () => selectWord(word),
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: matches[word] == 'wrong'
+                                  ? Colors.red
+                                  : (matches[word] != null
+                                      ? Colors.green
+                                      : (selectedWord == word
+                                          ? Colors.blue
+                                          : Colors.grey[300])),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(10.0),
+                              ),
+                            ),
                             child: Text(
                               word,
-                              style: const TextStyle(fontSize: 20),
+                              style: const TextStyle(
+                                fontSize: 20,
+                                fontWeight: FontWeight.w500,
+                              ),
                             ),
                           ),
                         ),
-                      ),
-                      const SizedBox(width: 50),
-                      Expanded(
-                        child: GestureDetector(
+                        const SizedBox(width: 50),
+                        // Gölge Resmi Butonu
+                        GestureDetector(
                           onTap: () => selectShadow(shadow),
                           child: Container(
-                            padding: const EdgeInsets.all(8.0),
-                            margin: const EdgeInsets.symmetric(vertical: 4.0),
-                            color: matches.containsValue(shadow)
-                                ? Colors.green
-                                : (selectedShadow == shadow
-                                    ? Colors.blue
-                                    : Colors.grey[300]),
+                            width: 150,
+                            height: 60,
+                            decoration: BoxDecoration(
+                              color: matches.containsValue(shadow)
+                                  ? Colors.green
+                                  : (selectedShadow == shadow
+                                      ? Colors.blue
+                                      : Colors.grey[300]),
+                              borderRadius: BorderRadius.circular(10.0),
+                            ),
                             child: Image.asset(
                               shadow,
-                              height: 50,
-                              width: 50,
+                              fit: BoxFit.contain,
                             ),
                           ),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   );
                 }),
               ),
