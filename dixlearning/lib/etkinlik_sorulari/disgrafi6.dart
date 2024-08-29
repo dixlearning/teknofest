@@ -96,7 +96,7 @@ class _EmojiQuizState extends State<EmojiQuiz> {
       appBar: AppBar(
         title: Text(
           'Görseldeki Ne?',
-          style: TextStyle(fontSize: 24, fontWeight: FontWeight.w600),
+          style: TextStyle(fontSize: 24, fontWeight: FontWeight.w500),
         ),
         backgroundColor: Colors.teal,
       ),
