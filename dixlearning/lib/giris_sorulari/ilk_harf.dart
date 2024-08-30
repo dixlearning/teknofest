@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'dart:math';
+import 'package:teknofest/giris_sorulari/gorsel_adi.dart';
 
 void main() {
   runApp(MaterialApp(
@@ -45,6 +46,7 @@ class _FillMissingLetterState extends State<FillMissingLetter> {
     setState(() {
       if (remainingWords.isEmpty) {
         _gameOver = true;
+        navigateToGorselAdi();
       } else {
         int randomIndex = Random().nextInt(remainingWords.length);
         currentWordData = remainingWords[randomIndex];
@@ -67,6 +69,15 @@ class _FillMissingLetterState extends State<FillMissingLetter> {
 
     Future.delayed(const Duration(seconds: 2), () {
       getNextWord();
+    });
+  }
+
+  void navigateToGorselAdi() {
+    Future.delayed(const Duration(seconds: 2), () {
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => const WordFillGame()),
+      );
     });
   }
 

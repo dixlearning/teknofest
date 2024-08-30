@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:teknofest/giris_sorulari/golge_oyunu.dart';
-import 'dart:math';
 
 class WordFillGame extends StatefulWidget {
   const WordFillGame({super.key});

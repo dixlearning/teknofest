@@ -63,8 +63,7 @@ class _ColorNamingGameState extends State<ColorNamingGame> {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                      builder: (context) =>
-                          const QuizPlay()), // BD Sorusu sayfası
+                      builder: (context) => const QuizPlay()), // BD Sorusu sayfası
                 );
               },
             ),

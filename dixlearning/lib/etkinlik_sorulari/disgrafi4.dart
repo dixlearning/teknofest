@@ -1,4 +1,3 @@
-import 'dart:math';
 
 import 'package:flutter/material.dart';
 
@@ -10,7 +9,6 @@ class KarisikRenkler extends StatefulWidget {
 }
 
 class _KarisikRenklerState extends State<KarisikRenkler> {
-  final _random = Random();
   final List<Color> renkler = [
     Colors.red,
     Colors.green,

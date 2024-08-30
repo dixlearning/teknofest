@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'dart:math';
 
 class KarisikAylar extends StatefulWidget {
   const KarisikAylar({super.key});
@@ -9,7 +8,6 @@ class KarisikAylar extends StatefulWidget {
 }
 
 class _KarisikAylarState extends State<KarisikAylar> {
-  final _random = Random();
   final List<String> aylar = [
     'OCAK',
     'ŞUBAT',

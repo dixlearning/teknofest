@@ -110,8 +110,7 @@ class QuizPlayState extends State<QuizPlay>
             Navigator.push(
               context,
               MaterialPageRoute(
-                builder: (context) =>
-                    DiskalkuliEgitimPage(), // Geçiş yapılacak sayfa
+                builder: (context) => DiskalkuliEgitimPage(), // Geçiş yapılacak sayfa
               ),
             );
           }

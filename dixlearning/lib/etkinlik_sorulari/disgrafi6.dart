@@ -31,7 +31,6 @@ class _EmojiQuizState extends State<EmojiQuiz> {
   bool _isCorrectAnswer = false;
   int _correctCount = 0;
   int _wrongCount = 0;
-  bool _quizCompleted = false;
   TextEditingController _controller = TextEditingController();
   late List<Map<String, String>> _shuffledEmojis;
 
@@ -83,7 +82,6 @@ class _EmojiQuizState extends State<EmojiQuiz> {
       });
     } else {
       setState(() {
-        _quizCompleted = true;
         _feedbackMessage = 'Tebrikler! Tümünü tamamladın.\n'
             'Doğru: $_correctCount, Yanlış: $_wrongCount';
       });

@@ -246,8 +246,7 @@ class _HomePageState extends State<HomePage2> {
     Navigator.push(
       context,
       MaterialPageRoute(
-          builder: (context) =>
-              const FillMissingLetter()), // IlkHarf sayfanızı buraya ekleyin
+          builder: (context) => const FillMissingLetter()), // IlkHarf sayfanızı buraya ekleyin
     );
   }
 
