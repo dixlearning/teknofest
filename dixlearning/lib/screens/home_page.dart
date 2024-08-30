@@ -19,7 +19,7 @@ class _LoginPageState extends State<LoginPage> {
     var width = MediaQuery.of(context).size.width;
 
     return Scaffold(
-      backgroundColor: Color(0xFFE0F7FA), // Açık turkuaz arka plan rengi
+      backgroundColor: const Color(0xFFE0F7FA), // Açık turkuaz arka plan rengi
       body: SingleChildScrollView(
         child: Column(
           children: [
@@ -33,7 +33,7 @@ class _LoginPageState extends State<LoginPage> {
                       height: width * 0.5, // Logonun yüksekliği artırıldı
                       margin: EdgeInsets.only(
                           top: height * 0.2), // Logo biraz aşağı kaydırıldı
-                      decoration: BoxDecoration(
+                      decoration: const BoxDecoration(
                         shape: BoxShape.circle,
                         image: DecorationImage(
                           fit: BoxFit.cover, // Logo uyumu
@@ -54,9 +54,7 @@ class _LoginPageState extends State<LoginPage> {
                         Container(
                           height: height * 0.30,
                           width: width,
-                          decoration: BoxDecoration(
-                              image: DecorationImage(
-                                  fit: BoxFit.cover, image: AssetImage(""))),
+                          // Eksik veya kullanılmayan resim kaynağı kaldırıldı
                         ),
                         Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 15),
@@ -84,11 +82,11 @@ class _LoginPageState extends State<LoginPage> {
                               Center(
                                 child: TextButton(
                                   onPressed: () {},
-                                  child: Text(
+                                  child: const Text(
                                     "Şifremi Unuttum",
                                     style: TextStyle(
                                         fontWeight: FontWeight.bold,
-                                        color: const Color(0xFF00796B)),
+                                        color: Color(0xFF00796B)),
                                   ),
                                 ),
                               ),
@@ -100,20 +98,20 @@ class _LoginPageState extends State<LoginPage> {
                                       context,
                                       CupertinoPageRoute(
                                         builder: (context) =>
-                                            EtkinlikSorulariListScreen(),
+                                            const EtkinlikSorulariListScreen(),
                                       ),
                                     );
                                   },
                                   style: ElevatedButton.styleFrom(
                                     backgroundColor:
                                         const Color(0xFF00796B), // Buton rengi
-                                    padding: EdgeInsets.symmetric(
+                                    padding: const EdgeInsets.symmetric(
                                         horizontal: 80, vertical: 15),
                                     shape: RoundedRectangleBorder(
                                       borderRadius: BorderRadius.circular(30),
                                     ),
                                   ),
-                                  child: Text(
+                                  child: const Text(
                                     "Giriş Yap",
                                     style: TextStyle(color: Colors.white),
                                   ),
@@ -127,15 +125,15 @@ class _LoginPageState extends State<LoginPage> {
                                       context,
                                       CupertinoPageRoute(
                                         builder: (context) =>
-                                            RegistrationScreen(),
+                                            const RegistrationScreen(),
                                       ),
                                     );
                                   },
-                                  child: Text(
+                                  child: const Text(
                                     "Hesap Oluştur",
                                     style: TextStyle(
                                         fontWeight: FontWeight.bold,
-                                        color: const Color(0xFF00796B)),
+                                        color: Color(0xFF00796B)),
                                   ),
                                 ),
                               ),
@@ -155,10 +153,10 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   TextStyle textfieldStyle() {
-    return TextStyle(
+    return const TextStyle(
       fontSize: 18,
       fontWeight: FontWeight.bold,
-      color: const Color(0xFF00796B), // Koyu turkuaz renk
+      color: Color(0xFF00796B), // Koyu turkuaz renk
     );
   }
 
@@ -181,21 +179,21 @@ class _LoginPageState extends State<LoginPage> {
   InputDecoration customInputDecoration(String hintText) {
     return InputDecoration(
       hintText: hintText,
-      hintStyle: TextStyle(color: const Color.fromARGB(255, 107, 107, 107)),
+      hintStyle: const TextStyle(color: Color.fromARGB(255, 107, 107, 107)),
       filled: true,
       fillColor: Colors.white,
-      contentPadding: EdgeInsets.symmetric(vertical: 15, horizontal: 20),
+      contentPadding: const EdgeInsets.symmetric(vertical: 15, horizontal: 20),
       border: OutlineInputBorder(
         borderRadius: BorderRadius.circular(30),
         borderSide: BorderSide.none,
       ),
       focusedBorder: OutlineInputBorder(
         borderRadius: BorderRadius.circular(30),
-        borderSide: BorderSide(color: Color(0xFF00796B)),
+        borderSide: const BorderSide(color: Color(0xFF00796B)),
       ),
       enabledBorder: OutlineInputBorder(
         borderRadius: BorderRadius.circular(30),
-        borderSide: BorderSide(color: Color(0xFF00796B)),
+        borderSide: const BorderSide(color: Color(0xFF00796B)),
       ),
     );
   }
