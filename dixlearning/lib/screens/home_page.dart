@@ -1,7 +1,12 @@
+import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:teknofest/other_functions/MessageHandler.dart';
+import 'package:teknofest/other_functions/game_manager.dart';
+import 'package:teknofest/screens/dashboard.dart';
 import 'package:teknofest/screens/etkinlik_sorulari_screen.dart';
 import 'package:teknofest/screens/registiration_screen.dart';
+import 'package:teknofest/supabase/auth.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -12,7 +17,9 @@ class LoginPage extends StatefulWidget {
 
 class _LoginPageState extends State<LoginPage> {
   bool _isObscure = true; // Şifrenin görünürlüğünü kontrol eden değişken
-
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
+  GameManager _gameManager = GameManager();
   @override
   Widget build(BuildContext context) {
     var height = MediaQuery.of(context).size.height;
@@ -63,6 +70,7 @@ class _LoginPageState extends State<LoginPage> {
                             children: [
                               customSizedBox(),
                               TextField(
+                                controller: _emailController,
                                 decoration:
                                     customInputDecoration("Kullanıcı Adı"),
                                 textAlign: TextAlign.center,
@@ -70,6 +78,7 @@ class _LoginPageState extends State<LoginPage> {
                               ),
                               customSizedBox(),
                               TextField(
+                                controller: _passwordController,
                                 obscureText: _isObscure,
                                 textAlign: TextAlign.center,
                                 decoration:
@@ -92,28 +101,63 @@ class _LoginPageState extends State<LoginPage> {
                               ),
                               customSizedBox(),
                               Center(
-                                child: ElevatedButton(
-                                  onPressed: () {
-                                    Navigator.push(
-                                      context,
-                                      CupertinoPageRoute(
-                                        builder: (context) =>
-                                            const EtkinlikSorulariListScreen(),
+                                child: SizedBox(
+                                  width: 200,
+                                  child: ElevatedButton(
+                                    onPressed: () async {
+                                      final email = _emailController.text;
+                                      final password = _passwordController.text;
+                                      Result<String> result =
+                                          await signIn(email, password);
+                                      if (result.error != null) {
+                                        ResultHandler(
+                                            context,
+                                            ContentType.failure,
+                                            "Oh Snap!",
+                                            result.error!);
+                                      } else {
+                                        ResultHandler(
+                                            context,
+                                            ContentType.success,
+                                            "Success!",
+                                            "Başarıyla giriş yaptınız. Yönlendiriliyorsunuz...");
+                                        Question? matchQuestion =
+                                            await _gameManager.getNextGame();
+
+                                        Future.delayed(
+                                            Duration(seconds: 4),
+                                            () => {
+                                                  if (matchQuestion == null)
+                                                    {
+                                                      Navigator.push(
+                                                          context,
+                                                          MaterialPageRoute(
+                                                              builder: (context) =>
+                                                                  Dashboard()))
+                                                    }
+                                                  else
+                                                    {
+                                                      Navigator.pushNamed(
+                                                          context,
+                                                          matchQuestion.Route!)
+                                                    }
+                                                });
+                                      }
+                                    },
+                                    style: ElevatedButton.styleFrom(
+                                      backgroundColor: const Color(
+                                          0xFF00796B), // Koyu turkuaz buton rengi
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(
+                                            12.0), // Yuvarlak köşeler
                                       ),
-                                    );
-                                  },
-                                  style: ElevatedButton.styleFrom(
-                                    backgroundColor:
-                                        const Color(0xFF00796B), // Buton rengi
-                                    padding: const EdgeInsets.symmetric(
-                                        horizontal: 80, vertical: 15),
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(30),
+                                      padding: const EdgeInsets.symmetric(
+                                          vertical: 16.0), // Dikey padding
                                     ),
-                                  ),
-                                  child: const Text(
-                                    "Giriş Yap",
-                                    style: TextStyle(color: Colors.white),
+                                    child: const Text(
+                                      "Giriş Yap",
+                                      style: TextStyle(color: Colors.white),
+                                    ),
                                   ),
                                 ),
                               ),

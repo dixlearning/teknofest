@@ -1,15 +1,17 @@
 import 'dart:math';
 import 'package:flutter/material.dart';
+import 'package:teknofest/other_functions/game_manager.dart';
 import 'package:teknofest/screens/etkinlik_sorulari_screen.dart';
 
 class HomePage extends StatefulWidget {
-  const HomePage({super.key});
-
+  HomePage({super.key, required this.question});
+  late Question question;
   @override
-  State<HomePage> createState() => _HomePageState();
+  State<HomePage> createState() => _HomePageState(question: question);
 }
 
 class _HomePageState extends State<HomePage> {
+  _HomePageState({required this.question});
   final List<Color> colors = [
     Colors.redAccent,
     Colors.amber,
@@ -23,9 +25,9 @@ class _HomePageState extends State<HomePage> {
   final Map<String, bool> correctMatches = {};
   int correctCount = 0;
   int incorrectCount = 0;
-
+  late Question question;
   List<String> shuffledLetters = [];
-
+  GameManager _gameManager = GameManager();
   @override
   void initState() {
     super.initState();
@@ -79,15 +81,10 @@ class _HomePageState extends State<HomePage> {
                 'Tamam',
                 style: TextStyle(color: Colors.white),
               ),
-              onPressed: () {
-                Navigator.of(context).pop(); // Dialogu kapat
-                // Yeni bir ekran açmak için navigator kullanabiliriz
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => const EtkinlikSorulariListScreen(),
-                  ),
-                );
+              onPressed: () async {
+                question.TrueResult = correctCount;
+                question.FalseResult = incorrectCount;
+                await _gameManager.setGame(context, question);
               },
             ),
           ],
@@ -112,6 +109,7 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        automaticallyImplyLeading: false,
         title: const Text('Hoş Geldin Testi!'),
         backgroundColor: Colors.deepPurpleAccent,
       ),

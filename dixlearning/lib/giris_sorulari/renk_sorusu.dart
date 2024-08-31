@@ -1,14 +1,19 @@
 import 'package:flutter/material.dart';
-import 'package:teknofest/giris_sorulari/bd_sorusu.dart'; // BD Sorusu sayfasının importu
+import 'package:teknofest/giris_sorulari/bd_sorusu.dart';
+import 'package:teknofest/other_functions/game_manager.dart'; // BD Sorusu sayfasının importu
 
 class ColorNamingGame extends StatefulWidget {
-  const ColorNamingGame({super.key});
+  ColorNamingGame({super.key, required this.question});
+  late Question question;
 
   @override
-  _ColorNamingGameState createState() => _ColorNamingGameState();
+  _ColorNamingGameState createState() =>
+      _ColorNamingGameState(question: question);
 }
 
 class _ColorNamingGameState extends State<ColorNamingGame> {
+  _ColorNamingGameState({required this.question});
+  late Question question;
   final List<Map<String, dynamic>> colorBoxes = [
     {'color': Colors.orange, 'name': 'turuncu'},
     {'color': Colors.green, 'name': 'yeşil'},
@@ -23,7 +28,7 @@ class _ColorNamingGameState extends State<ColorNamingGame> {
   bool showResults = false;
   int correctCount = 0;
   int incorrectCount = 0;
-
+  GameManager _gameManager = GameManager();
   @override
   void initState() {
     super.initState();
@@ -45,6 +50,8 @@ class _ColorNamingGameState extends State<ColorNamingGame> {
       checked[index] = true;
       showResults = true;
     });
+    question.TrueResult = correctCount;
+    question.FalseResult = incorrectCount;
   }
 
   void _showResultDialog() {
@@ -57,14 +64,9 @@ class _ColorNamingGameState extends State<ColorNamingGame> {
           actions: [
             TextButton(
               child: const Text("Tamam"),
-              onPressed: () {
-                Navigator.of(context).pop();
-                // BD Sorusu sayfasına geçiş
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => const QuizPlay()), // BD Sorusu sayfası
-                );
+              onPressed: () async {
+                print("SetGamee");
+                await _gameManager.setGame(context, question);
               },
             ),
           ],
@@ -184,6 +186,7 @@ class _ColorNamingGameState extends State<ColorNamingGame> {
         ),
       ),
       appBar: AppBar(
+        automaticallyImplyLeading: false,
         backgroundColor: Colors.grey[400],
         title: const FittedBox(
           fit: BoxFit.scaleDown,

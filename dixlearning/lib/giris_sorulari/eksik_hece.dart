@@ -1,19 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:teknofest/giris_sorulari/renk_sorusu.dart';
+import 'package:teknofest/other_functions/game_manager.dart';
 
 class EksikHeceler extends StatefulWidget {
-  const EksikHeceler({Key? key}) : super(key: key);
-
+  EksikHeceler({Key? key, required this.question}) : super(key: key);
+  late Question question;
   @override
-  _EksikHecelerState createState() => _EksikHecelerState();
+  _EksikHecelerState createState() => _EksikHecelerState(question: question);
 }
 
 class _EksikHecelerState extends State<EksikHeceler> {
+  _EksikHecelerState({required this.question});
   final TextEditingController _tavaController = TextEditingController();
   final TextEditingController _cekicController = TextEditingController();
   final TextEditingController _cetvelController = TextEditingController();
   final TextEditingController _armutController = TextEditingController();
-
+  late Question question;
   bool _isTavaCompleted = false;
   bool _isCekicCompleted = false;
   bool _isCetvelCompleted = false;
@@ -25,9 +27,9 @@ class _EksikHecelerState extends State<EksikHeceler> {
   Color _cekicColor = Colors.black;
   Color _cetvelColor = Colors.black;
   Color _armutColor = Colors.black;
-
+  GameManager _gameManager = GameManager();
   int _correctAnswers = 0;
-
+  int _incorrectAnswers = 0;
   void _checkAllAnswers() {
     _correctAnswers = 0;
 
@@ -75,7 +77,7 @@ class _EksikHecelerState extends State<EksikHeceler> {
       _isChecked = true;
     });
 
-    Future.delayed(const Duration(seconds: 3), _navigateToNextQuestion);
+    Future.delayed(const Duration(seconds: 3), _handleGameEnd);
   }
 
   void _checkAnswer(String input, String correctAnswer, Function onComplete,
@@ -85,21 +87,22 @@ class _EksikHecelerState extends State<EksikHeceler> {
       updateColor(Colors.green);
       _correctAnswers++;
     } else {
+      _incorrectAnswers++;
       updateColor(Colors.red);
     }
   }
 
-  void _navigateToNextQuestion() {
-    Navigator.push(
-      context,
-      MaterialPageRoute(builder: (context) => const ColorNamingGame()),
-    );
+  void _handleGameEnd() async {
+    question.TrueResult = _correctAnswers;
+    question.FalseResult = _incorrectAnswers;
+    await _gameManager.setGame(context, question);
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        automaticallyImplyLeading: false,
         title: const Text('Hoş Geldin Testi!'),
         backgroundColor: Colors.grey,
       ),

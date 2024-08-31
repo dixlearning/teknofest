@@ -1,19 +1,35 @@
-
+import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
+import 'package:flutter/material.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:teknofest/main.dart';
+import 'package:teknofest/other_functions/MessageHandler.dart';
+import 'package:teknofest/screens/registiration_screen.dart';
 
-Future<void> signUp(String email, String password) async {
+Future<Result<AuthResponse>> signUp(String email, String password) async {
   try {
-    await supabase.auth.signUp(email: email, password: password);
+    AuthResponse response = await Supabase.instance.client.auth
+        .signUp(email: email, password: password);
+    return Result(data: response);
   } catch (e) {
-    print('Sign up error: $e');
+    return Result(error: e.toString());
   }
 }
 
-Future<void> signIn(String email, String password) async {
+Future<Result<String>> UserDetail(UserRequest response) async {
+  try {
+    await Supabase.instance.client.from("Users").insert(response);
+    return Result();
+  } catch (e) {
+    return Result(error: e.toString());
+  }
+}
+
+Future<Result<String>> signIn(String email, String password) async {
   try {
     await supabase.auth.signInWithPassword(email: email, password: password);
+    return Result();
   } catch (e) {
-    print('Sign in error: $e');
+    return Result(error: e.toString());
   }
 }
 

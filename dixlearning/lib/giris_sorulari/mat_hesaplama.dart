@@ -1,14 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:teknofest/giris_sorulari/ilk_harf.dart';
+import 'package:teknofest/other_functions/game_manager.dart';
 
 class HomePage2 extends StatefulWidget {
-  const HomePage2({super.key});
-
+  HomePage2({super.key, required this.question});
+  late Question question;
   @override
-  _HomePageState createState() => _HomePageState();
+  _HomePageState createState() => _HomePageState(question: question);
 }
 
 class _HomePageState extends State<HomePage2> {
+  _HomePageState({required this.question});
+  late Question question;
+
   List<Map<String, dynamic>> equations = [
     {'equation': '1 + ? = 4', 'result': 3},
     {'equation': '2 x ? = 10', 'result': 5},
@@ -27,11 +31,12 @@ class _HomePageState extends State<HomePage2> {
   int correctCount = 0;
   int wrongCount = 0;
   bool gameEnded = false;
-
+  GameManager _gameManager = GameManager();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        automaticallyImplyLeading: false,
         title: const Text('Hoş Geldin Testi!'),
       ),
       body: Padding(
@@ -242,12 +247,10 @@ class _HomePageState extends State<HomePage2> {
     );
   }
 
-  void _handleGameEnd() {
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-          builder: (context) => const FillMissingLetter()), // IlkHarf sayfanızı buraya ekleyin
-    );
+  void _handleGameEnd() async {
+    question.TrueResult = correctCount;
+    question.FalseResult = wrongCount;
+    await _gameManager.setGame(context, question);
   }
 
   void checkGameEnd() {
