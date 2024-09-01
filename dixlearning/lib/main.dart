@@ -27,7 +27,10 @@ import 'package:teknofest/giris_sorulari/mat_hesaplama.dart';
 import 'package:teknofest/giris_sorulari/renk_sorusu.dart';
 import 'package:teknofest/giris_sorulari/sayi_oyunu.dart';
 import 'package:teknofest/other_functions/game_manager.dart';
+<<<<<<< HEAD
 import 'package:teknofest/screens/SplashScreen.dart';
+=======
+>>>>>>> c7a6ac4072d82b4a9348628300196ac711091cc4
 
 import 'package:teknofest/screens/home_page.dart';
 import 'package:teknofest/giris_sorulari/bd_sorusu.dart';
@@ -98,7 +101,11 @@ class MyApp extends StatelessWidget {
         'giris_sorulari/mat_hesaplama': (context) =>
             HomePage2(question: _gameManager.oyunlar[6]),
         'giris_sorulari/renk_sorusu': (context) =>
+<<<<<<< HEAD
            ColorNamingGame(question: _gameManager.oyunlar[7]),
+=======
+            DiskalkuliEgitimPage(question: _gameManager.oyunlar[7]),
+>>>>>>> c7a6ac4072d82b4a9348628300196ac711091cc4
         'giris_sorulari/sayi_oyunu': (context) =>
             DiskalkuliEgitimPage(question: _gameManager.oyunlar[8]),
 
