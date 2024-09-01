@@ -1,21 +1,19 @@
 import 'package:flutter/material.dart';
 import 'dart:math';
 import 'package:teknofest/giris_sorulari/gorsel_adi.dart';
-
-void main() {
-  runApp(MaterialApp(
-    home: FillMissingLetter(),
-  ));
-}
+import 'package:teknofest/other_functions/game_manager.dart';
 
 class FillMissingLetter extends StatefulWidget {
-  const FillMissingLetter({super.key});
-
+  FillMissingLetter({super.key, required this.question});
+  late Question question;
   @override
-  _FillMissingLetterState createState() => _FillMissingLetterState();
+  _FillMissingLetterState createState() =>
+      _FillMissingLetterState(question: question);
 }
 
 class _FillMissingLetterState extends State<FillMissingLetter> {
+  _FillMissingLetterState({required this.question});
+  late Question question;
   final List<Map<String, String>> wordData = [
     {"word": "pasta", "imageUrl": "assets/images/ilk_harf_img/pasta.jpg"},
     {"word": "örümcek", "imageUrl": "assets/images/ilk_harf_img/orumcek.jpg"},
@@ -33,7 +31,7 @@ class _FillMissingLetterState extends State<FillMissingLetter> {
   bool _gameOver = false;
   int correctAnswers = 0;
   int totalQuestions = 0;
-
+  GameManager _gameManager = GameManager();
   @override
   void initState() {
     super.initState();
@@ -46,7 +44,7 @@ class _FillMissingLetterState extends State<FillMissingLetter> {
     setState(() {
       if (remainingWords.isEmpty) {
         _gameOver = true;
-        navigateToGorselAdi();
+        HandleEndGame();
       } else {
         int randomIndex = Random().nextInt(remainingWords.length);
         currentWordData = remainingWords[randomIndex];
@@ -72,19 +70,17 @@ class _FillMissingLetterState extends State<FillMissingLetter> {
     });
   }
 
-  void navigateToGorselAdi() {
-    Future.delayed(const Duration(seconds: 2), () {
-      Navigator.push(
-        context,
-        MaterialPageRoute(builder: (context) => const WordFillGame()),
-      );
-    });
+  void HandleEndGame() async {
+    question.TrueResult = correctAnswers;
+    question.FalseResult = totalQuestions - correctAnswers;
+    await _gameManager.setGame(context, question);
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        automaticallyImplyLeading: false,
         title: const Text("Hoş Geldin Testi!"),
         backgroundColor: Colors.grey,
       ),

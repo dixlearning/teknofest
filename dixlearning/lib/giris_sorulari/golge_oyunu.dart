@@ -1,14 +1,18 @@
 import 'package:flutter/material.dart';
-import 'package:teknofest/giris_sorulari/giris_harf_eslestir_disleksi.dart'; // Import ediliyor
+import 'package:teknofest/giris_sorulari/giris_harf_eslestir_disleksi.dart';
+import 'package:teknofest/other_functions/game_manager.dart'; // Import ediliyor
 
 class WordShadowMatchGame extends StatefulWidget {
-  const WordShadowMatchGame({super.key});
-
+  WordShadowMatchGame({super.key, required this.question});
+  late Question question;
   @override
-  _WordShadowMatchGameState createState() => _WordShadowMatchGameState();
+  _WordShadowMatchGameState createState() =>
+      _WordShadowMatchGameState(question: question);
 }
 
 class _WordShadowMatchGameState extends State<WordShadowMatchGame> {
+  _WordShadowMatchGameState({required this.question});
+  late Question question;
   final List<String> words = [
     'Ördek',
     'Şemsiye',
@@ -28,6 +32,10 @@ class _WordShadowMatchGameState extends State<WordShadowMatchGame> {
   List<String> shuffledShadowImages = [];
   String? selectedWord;
   String? selectedShadow;
+  int correctAnswer = 0;
+  int incorrectAnswer = 0;
+  GameManager _gameManager = GameManager();
+
   final Map<String, String> matches = {};
   @override
   void initState() {
@@ -53,13 +61,10 @@ class _WordShadowMatchGameState extends State<WordShadowMatchGame> {
     });
   }
 
-  void _handleGameEnd() {
-    Navigator.pushReplacement(
-      context,
-      MaterialPageRoute(
-        builder: (context) => const HomePage(), // Yönlendirme yapılacak sayfa
-      ),
-    );
+  void _handleGameEnd() async {
+    question.TrueResult = correctAnswer;
+    question.FalseResult = incorrectAnswer;
+    await _gameManager.setGame(context, question);
   }
 
   void checkMatch() {
@@ -68,11 +73,13 @@ class _WordShadowMatchGameState extends State<WordShadowMatchGame> {
         matches[selectedWord!] = selectedShadow!;
         selectedWord = null;
         selectedShadow = null;
+        correctAnswer++;
         if (matches.length == words.length) {
           _handleGameEnd();
         }
       });
     } else {
+      incorrectAnswer++;
       setState(() {
         matches[selectedWord!] = 'wrong';
         Future.delayed(const Duration(seconds: 1), () {
@@ -90,6 +97,7 @@ class _WordShadowMatchGameState extends State<WordShadowMatchGame> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        automaticallyImplyLeading: false,
         title: const Text('Hoş Geldin Testi!'),
         backgroundColor: Colors.grey,
       ),

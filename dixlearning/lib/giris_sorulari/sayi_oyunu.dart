@@ -1,26 +1,32 @@
 import 'package:flutter/material.dart';
-import 'package:teknofest/giris_sorulari/mat_hesaplama.dart'; // Matematik oyunu ekranını import et
+import 'package:teknofest/giris_sorulari/mat_hesaplama.dart';
+import 'package:teknofest/other_functions/game_manager.dart'; // Matematik oyunu ekranını import et
 
 class DiskalkuliEgitimPage extends StatefulWidget {
   final VoidCallback? onComplete; // Callback fonksiyonu için gerekli
 
-  const DiskalkuliEgitimPage({super.key, this.onComplete});
+  DiskalkuliEgitimPage({super.key, this.onComplete, required this.question});
+  late Question question;
 
   @override
-  DiskalkuliEgitimPageState createState() => DiskalkuliEgitimPageState();
+  DiskalkuliEgitimPageState createState() =>
+      DiskalkuliEgitimPageState(question: question);
 }
 
 class DiskalkuliEgitimPageState extends State<DiskalkuliEgitimPage> {
+  DiskalkuliEgitimPageState({required this.question});
+  late Question question;
   final List<TextEditingController> _controllers =
       List.generate(8, (index) => TextEditingController());
 
   final List<int> correctCounts = [2, 5, 4, 7, 6, 9, 3, 8];
   final List<Color?> _fieldColors = List.generate(8, (index) => null);
-  final List<String> _answers = List.generate(8, (index) => ''); // Doğru cevapları saklamak için
+  final List<String> _answers =
+      List.generate(8, (index) => ''); // Doğru cevapları saklamak için
 
   bool _showNextQuestionButton = false; // Sıradaki Soru butonunu göstermek için
-
-  void _handleGameEnd() {
+  GameManager _gameManager = GameManager();
+  void _handleGameEnd() async {
     if (widget.onComplete != null) {
       widget.onComplete!(); // Callback'i çağır
     }
@@ -30,38 +36,35 @@ class DiskalkuliEgitimPageState extends State<DiskalkuliEgitimPage> {
     );
 
     // 3 saniye sonra Matematik hesaplama sayfasına geçiş
-    Future.delayed(const Duration(seconds: 3), () {
-      Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (context) => HomePage2(), // MatHesaplamaPage'e geçiş
-        ),
-      );
-    });
+    Future.delayed(const Duration(seconds: 3), () {});
   }
 
-  void verifyCounts() {
-    bool allCorrect = true;
+  void verifyCounts() async {
+    bool allCorrect = false;
+    int trueResult = 0;
+    int falseResult = 0;
     for (int i = 0; i < _controllers.length; i++) {
       final userAnswer = int.tryParse(_controllers[i].text);
       if (userAnswer == correctCounts[i]) {
         _fieldColors[i] = Colors.green[100];
         _answers[i] = ''; // Cevap doğruysa boş bırak
+        trueResult++;
       } else {
         _fieldColors[i] = Colors.red[100];
-        _answers[i] = 'Doğru cevap: ${correctCounts[i]}'; // Cevap yanlışsa doğru cevabı yaz
-        allCorrect = false; // Eğer yanlış cevap varsa allCorrect'i false yap
+        _answers[i] =
+            'Doğru cevap: ${correctCounts[i]}'; // Cevap yanlışsa doğru cevabı yaz
+        falseResult++;
       }
     }
+    question.FalseResult = falseResult;
+    question.TrueResult = trueResult;
+    await _gameManager.setGame(context, question);
 
     setState(() {
       _showNextQuestionButton = !allCorrect; // Sıradaki Soru butonunu göster
     });
 
-    // Tüm cevaplar doğruysa oyunu sonlandır
-    if (allCorrect) {
-      _handleGameEnd();
-    }
+    _handleGameEnd();
   }
 
   @override
@@ -69,6 +72,7 @@ class DiskalkuliEgitimPageState extends State<DiskalkuliEgitimPage> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Hoş Geldin Testi!'),
+        automaticallyImplyLeading: false,
         backgroundColor: Colors.grey, // AppBar rengini gri yaptık
       ),
       body: Padding(
@@ -93,49 +97,56 @@ class DiskalkuliEgitimPageState extends State<DiskalkuliEgitimPage> {
                     fieldColor: _fieldColors[0],
                     answerText: _answers[0],
                   ),
-                  const SizedBox(height: 16), // Görseller arasında boşluk bırakıldı
+                  const SizedBox(
+                      height: 16), // Görseller arasında boşluk bırakıldı
                   EtkinlikSatiri(
                     image1Path: 'assets/images/sayi_oyunu_img/balik2.png',
                     controller: _controllers[1],
                     fieldColor: _fieldColors[1],
                     answerText: _answers[1],
                   ),
-                  const SizedBox(height: 16), // Görseller arasında boşluk bırakıldı
+                  const SizedBox(
+                      height: 16), // Görseller arasında boşluk bırakıldı
                   EtkinlikSatiri(
                     image1Path: 'assets/images/sayi_oyunu_img/tavsan1.png',
                     controller: _controllers[2],
                     fieldColor: _fieldColors[2],
                     answerText: _answers[2],
                   ),
-                  const SizedBox(height: 16), // Görseller arasında boşluk bırakıldı
+                  const SizedBox(
+                      height: 16), // Görseller arasında boşluk bırakıldı
                   EtkinlikSatiri(
                     image1Path: 'assets/images/sayi_oyunu_img/tavsan2.png',
                     controller: _controllers[3],
                     fieldColor: _fieldColors[3],
                     answerText: _answers[3],
                   ),
-                  const SizedBox(height: 16), // Görseller arasında boşluk bırakıldı
+                  const SizedBox(
+                      height: 16), // Görseller arasında boşluk bırakıldı
                   EtkinlikSatiri(
                     image1Path: 'assets/images/sayi_oyunu_img/havuc1.png',
                     controller: _controllers[4],
                     fieldColor: _fieldColors[4],
                     answerText: _answers[4],
                   ),
-                  const SizedBox(height: 16), // Görseller arasında boşluk bırakıldı
+                  const SizedBox(
+                      height: 16), // Görseller arasında boşluk bırakıldı
                   EtkinlikSatiri(
                     image1Path: 'assets/images/sayi_oyunu_img/havuc2.png',
                     controller: _controllers[5],
                     fieldColor: _fieldColors[5],
                     answerText: _answers[5],
                   ),
-                  const SizedBox(height: 16), // Görseller arasında boşluk bırakıldı
+                  const SizedBox(
+                      height: 16), // Görseller arasında boşluk bırakıldı
                   EtkinlikSatiri(
                     image1Path: 'assets/images/sayi_oyunu_img/cicek1.png',
                     controller: _controllers[6],
                     fieldColor: _fieldColors[6],
                     answerText: _answers[6],
                   ),
-                  const SizedBox(height: 16), // Görseller arasında boşluk bırakıldı
+                  const SizedBox(
+                      height: 16), // Görseller arasında boşluk bırakıldı
                   EtkinlikSatiri(
                     image1Path: 'assets/images/sayi_oyunu_img/cicek2.png',
                     controller: _controllers[7],
@@ -151,20 +162,6 @@ class DiskalkuliEgitimPageState extends State<DiskalkuliEgitimPage> {
                   child: const Text('Doğrula'),
                 ),
               ),
-              if (_showNextQuestionButton)
-                Center(
-                  child: ElevatedButton(
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => HomePage2(), // MatHesaplamaPage'e geçiş
-                        ),
-                      );
-                    },
-                    child: const Text('Sıradaki Soru'),
-                  ),
-                ),
             ],
           ),
         ),
@@ -199,15 +196,20 @@ class EtkinlikSatiri extends StatelessWidget {
             const SizedBox(width: 16), // Biraz boşluk ekledik
             Expanded(
               child: Padding(
-                padding: const EdgeInsets.only(right: 16.0), // Sağdan bir tık boşluk
+                padding:
+                    const EdgeInsets.only(right: 16.0), // Sağdan bir tık boşluk
                 child: TextField(
                   controller: controller,
                   decoration: InputDecoration(
                     labelText: 'Nesne Sayısı:',
                     filled: true,
                     fillColor: fieldColor,
-                    suffixText: answerText.isNotEmpty ? answerText : null, // Yanlış cevapların altına doğru cevabı yaz
-                    suffixStyle: TextStyle(color: Colors.red), // Yanlış cevapların altındaki doğru cevabı kırmızı renkte göster
+                    suffixText: answerText.isNotEmpty
+                        ? answerText
+                        : null, // Yanlış cevapların altına doğru cevabı yaz
+                    suffixStyle: TextStyle(
+                        color: Colors
+                            .red), // Yanlış cevapların altındaki doğru cevabı kırmızı renkte göster
                   ),
                   keyboardType: TextInputType.number,
                   onChanged: (value) {

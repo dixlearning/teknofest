@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:teknofest/giris_sorulari/sayi_oyunu.dart';
+import 'package:teknofest/other_functions/game_manager.dart';
 
 class QuestionModel {
   late String question;
@@ -39,7 +40,6 @@ class QuestionModel {
 
 List<QuestionModel> getQuestion() {
   List<QuestionModel> questions = [];
-
   questions.add(QuestionModel(
     question: '_uzdolabı',
     answer: 'b',
@@ -68,14 +68,15 @@ List<QuestionModel> getQuestion() {
 }
 
 class QuizPlay extends StatefulWidget {
-  const QuizPlay({super.key});
-
+  QuizPlay({super.key, required this.question});
+  late Question question;
   @override
-  State<QuizPlay> createState() => QuizPlayState();
+  State<QuizPlay> createState() => QuizPlayState(question: question);
 }
 
 class QuizPlayState extends State<QuizPlay>
     with SingleTickerProviderStateMixin {
+  QuizPlayState({required this.question});
   List<QuestionModel> _questions = [];
   int index = 0;
   bool isAnswered = false;
@@ -84,7 +85,10 @@ class QuizPlayState extends State<QuizPlay>
   late AnimationController animationController;
   double beginAnim = 0.0;
   double endAnim = 1.0;
-
+  late Question question;
+  int correctAnswer = 0;
+  int incorrectAnswer = 0;
+  GameManager _gameManager = GameManager();
   @override
   void initState() {
     super.initState();
@@ -99,20 +103,19 @@ class QuizPlayState extends State<QuizPlay>
     startAnim();
     animationController.addStatusListener((AnimationStatus status) {
       if (status == AnimationStatus.completed) {
-        setState(() {
+        setState(() async {
           if (index < _questions.length - 1) {
             index++;
             resetAnim();
             startAnim();
             isAnswered = false;
+            print("next*1");
           } else {
             stopAnim();
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => DiskalkuliEgitimPage(), // Geçiş yapılacak sayfa
-              ),
-            );
+            question.TrueResult = correctAnswer;
+            question.FalseResult = incorrectAnswer;
+            await _gameManager.setGame(context, question);
+            print("next");
           }
         });
       }
@@ -135,11 +138,16 @@ class QuizPlayState extends State<QuizPlay>
     setState(() {
       isAnswered = true;
       isCorrect = _questions[index].getAnswer() == selectedAnswer;
+      if (isCorrect) {
+        correctAnswer++;
+      } else {
+        incorrectAnswer++;
+      }
     });
     stopAnim();
   }
 
-  void nextQuestion() {
+  void nextQuestion() async {
     if (index < _questions.length - 1) {
       setState(() {
         index++;
@@ -149,12 +157,9 @@ class QuizPlayState extends State<QuizPlay>
       });
     } else {
       stopAnim();
-      Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (context) => DiskalkuliEgitimPage(), // Geçiş yapılacak sayfa
-        ),
-      );
+      question.TrueResult = correctAnswer;
+      question.FalseResult = incorrectAnswer;
+      await _gameManager.setGame(context, question);
     }
   }
 

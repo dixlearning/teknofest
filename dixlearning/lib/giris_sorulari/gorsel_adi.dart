@@ -1,14 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:teknofest/giris_sorulari/golge_oyunu.dart';
+import 'package:teknofest/other_functions/game_manager.dart';
 
 class WordFillGame extends StatefulWidget {
-  const WordFillGame({super.key});
-
+  WordFillGame({super.key, required this.question});
+  late Question question;
   @override
-  _WordFillGameState createState() => _WordFillGameState();
+  _WordFillGameState createState() => _WordFillGameState(question: question);
 }
 
 class _WordFillGameState extends State<WordFillGame> {
+  _WordFillGameState({required this.question});
+  late Question question;
   final List<Map<String, String>> items = [
     {'emoji': '🪟', 'word': ' ', 'answer': 'pencere'},
     {'emoji': '👓', 'word': ' ', 'answer': 'gözlük'},
@@ -21,7 +24,9 @@ class _WordFillGameState extends State<WordFillGame> {
   final List<List<String>> userLetters = [];
   final List<Color> colors = [];
   late List<String> alphabet;
-
+  int correctUserAnswer = 0;
+  int incorrectUserAnswer = 0;
+  GameManager _gameManager = GameManager();
   bool _gameOver = false;
 
   @override
@@ -37,13 +42,10 @@ class _WordFillGameState extends State<WordFillGame> {
     alphabet.shuffle(); // Harfleri karıştır
   }
 
-  void _handleGameEnd() {
-    Navigator.pushReplacement(
-      context,
-      MaterialPageRoute(
-        builder: (context) => const WordShadowMatchGame(),
-      ),
-    );
+  void _handleGameEnd() async {
+    question.TrueResult = correctUserAnswer;
+    question.FalseResult = incorrectUserAnswer;
+    await _gameManager.setGame(context, question);
   }
 
   void _checkAnswers(int index) {
@@ -54,8 +56,10 @@ class _WordFillGameState extends State<WordFillGame> {
     setState(() {
       if (userAnswer == correctAnswer) {
         colors[index] = Colors.green.withOpacity(0.3);
+        correctUserAnswer++;
       } else {
         colors[index] = Colors.red.withOpacity(0.3);
+        incorrectUserAnswer++;
       }
 
       bool allChecked = true;
@@ -85,6 +89,7 @@ class _WordFillGameState extends State<WordFillGame> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        automaticallyImplyLeading: false,
         title: const Text('Hoş Geldin Testi!'),
         backgroundColor: Colors.grey,
       ),

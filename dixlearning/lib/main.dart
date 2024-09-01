@@ -24,7 +24,10 @@ import 'package:teknofest/giris_sorulari/golge_oyunu.dart';
 import 'package:teknofest/giris_sorulari/gorsel_adi.dart';
 import 'package:teknofest/giris_sorulari/ilk_harf.dart';
 import 'package:teknofest/giris_sorulari/mat_hesaplama.dart';
+import 'package:teknofest/giris_sorulari/renk_sorusu.dart';
 import 'package:teknofest/giris_sorulari/sayi_oyunu.dart';
+import 'package:teknofest/other_functions/game_manager.dart';
+import 'package:teknofest/screens/SplashScreen.dart';
 
 import 'package:teknofest/screens/home_page.dart';
 import 'package:teknofest/giris_sorulari/bd_sorusu.dart';
@@ -39,12 +42,12 @@ Future<void> main() async {
   //.env dosyasına yapıştırın. Auth yani oturum açma işlemlerinin ve veritabanının yönetimi supabase üzerinden gerçekleşir.
 
   await Supabase.initialize(
-    url: "https://mjkqwlclzsssyufuhmft.supabase.co",
+    url: "https://qzdkjswrplbiymknksxj.supabase.co",
     anonKey:
-        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1qa3F3bGNsenNzc3l1ZnVobWZ0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3MjM5Nzg3NDMsImV4cCI6MjAzOTU1NDc0M30.g9xzfODiP5XI6heSlO7BpV8gZg97n337hQ8tJDJmsa0",
+        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InF6ZGtqc3dycGxiaXlta25rc3hqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MjQ1NTg5MzUsImV4cCI6MjA0MDEzNDkzNX0.syw67FF6IVa-W55dwkx35ynAV5W-LU6joX2EmlHl14g",
   );
 
-  runApp(const MyApp());
+  runApp(MyApp());
 }
 
 //supabase ile ilgili fonksiyonları kullanmak istiyorsanız aşağıdaki tanımlamayı kullanmanız yeterli. Normalde supabase instance tek seferde
@@ -55,8 +58,9 @@ final supabase = Supabase.instance.client; //------------------------------
 //--------------------------------------------------------------------
 //-----------------------------------------------------------------------
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
-
+  MyApp({super.key});
+  GameManager _gameManager = GameManager();
+  int asd = 1;
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -68,22 +72,35 @@ class MyApp extends StatelessWidget {
       initialRoute: '/',
       routes: {
         //oturum açma işlemlerinin yapıldığı bölüm
-        '/': (context) => const LoginPage(),
+        '/': (context) => OnboardScreen(),
         '/register': (context) => const RegistrationScreen(),
 
-        // //giriş sorularının bulunduğu rotalar
-        'giris_sorulari/giris_harf_eslestir_disleksi': (context) =>
-            const HomePage(),
-        'giris_sorulari/golge_oyunu': (context) => const WordShadowMatchGame(),
-        'giris_sorulari/gorsel_adi': (context) => const WordFillGame(),
-        'giris_sorulari/eksik_hece': (context) => const EksikHeceler(),
-        '/game': (context) =>
-            const FillMissingLetter(), //ilk harf oyununda hata veriyordu bu satırı ekledim
+        'giris_sorulari/bd_sorusu': (context) =>
+            QuizPlay(question: _gameManager.oyunlar[0]),
 
-        'giris_sorulari/ilk_harf/game': (context) => const FillMissingLetter(),
-        'giris_sorulari/bd_sorusu': (context) => const QuizPlay(),
-        'giris_sorulari/mat_hesaplama': (context) => const HomePage2(),
-        'giris_sorulari/sayi_oyunu': (context) => const DiskalkuliEgitimPage(),
+        'giris_sorulari/eksik_hece': (context) =>
+            EksikHeceler(question: _gameManager.oyunlar[1]),
+
+        'giris_sorulari/giris_harf_eslestir_disleksi': (context) =>
+            HomePage(question: _gameManager.oyunlar[2]),
+        'giris_sorulari/golge_oyunu': (context) =>
+            WordShadowMatchGame(question: _gameManager.oyunlar[3]),
+        'giris_sorulari/gorsel_adi': (context) =>
+            WordFillGame(question: _gameManager.oyunlar[4]),
+
+        '/game': (context) => FillMissingLetter(
+            question: _gameManager.oyunlar[
+                5]), //ilk harf oyununda hata veriyordu bu satırı ekledim
+
+        'giris_sorulari/ilk_harf': (context) =>
+            FillMissingLetter(question: _gameManager.oyunlar[5]),
+
+        'giris_sorulari/mat_hesaplama': (context) =>
+            HomePage2(question: _gameManager.oyunlar[6]),
+        'giris_sorulari/renk_sorusu': (context) =>
+           ColorNamingGame(question: _gameManager.oyunlar[7]),
+        'giris_sorulari/sayi_oyunu': (context) =>
+            DiskalkuliEgitimPage(question: _gameManager.oyunlar[8]),
 
         //etkinlik sorularının bulunduğu rotalar
         'Disgrafi Soru 1': (context) => const PoemPage(),
@@ -103,7 +120,7 @@ class MyApp extends StatelessWidget {
         'Disleksi Soru 2': (context) => const HomeScreen(),
         'Disleksi Soru 3': (context) => const DyslexiaActivityPage(),
         'Disleksi Soru 4': (context) => Disleksi4(),
-        'Metin Takibi': (context) => PointerFollowPage(),
+        'Metin Takibi 1': (context) => PointerFollowPage(),
       },
       //home: nigga,
     );
