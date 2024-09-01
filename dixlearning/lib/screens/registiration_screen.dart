@@ -1,11 +1,7 @@
 import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
 import 'package:flutter/material.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
-<<<<<<< HEAD
 import 'package:teknofest/screens/SplashScreen.dart';
-=======
-import 'package:teknofest/giris_sorulari/eksik_hece.dart';
->>>>>>> c7a6ac4072d82b4a9348628300196ac711091cc4
 import 'package:teknofest/other_functions/MessageHandler.dart';
 import 'package:teknofest/screens/home_page.dart';
 import 'package:teknofest/supabase/auth.dart';
@@ -85,18 +81,9 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
             ),
             const SizedBox(height: 20),
             _buildDropdown(
-<<<<<<< HEAD
               label: 'Cinsiyet',
             ),
             const SizedBox(height: 20),
-=======
-                controller: _genderController,
-                label: 'Cinsiyet',
-                obscureText: false),
-            const SizedBox(height: 20),
-
-            // E-posta Alanı
->>>>>>> c7a6ac4072d82b4a9348628300196ac711091cc4
             _buildTextField(
               controller: _emailController,
               label: 'Email',
@@ -121,28 +108,17 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
             ),
             const SizedBox(height: 20),
             SizedBox(
-<<<<<<< HEAD
               width: double.infinity, // Butonun tam genişlikte olması
-=======
-              width: 200,
->>>>>>> c7a6ac4072d82b4a9348628300196ac711091cc4
               child: ElevatedButton(
                 onPressed: () async {
                   final email = _emailController.text;
                   final password = _passwordController.text;
                   final name = _nameController.text;
 
-<<<<<<< HEAD
                   if (email.isEmpty ||
                       password.isEmpty ||
                       name.isEmpty ||
                       selectedGenderValue == null) {
-=======
-                  if (email == "" ||
-                      password == "" ||
-                      name == "" ||
-                      selectedGenderValue == "") {
->>>>>>> c7a6ac4072d82b4a9348628300196ac711091cc4
                     ResultHandler(context, ContentType.failure, "Oh Snap!",
                         "Lütfen Boşluk Bırakmayınız...");
                     return;
@@ -170,11 +146,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                               Navigator.pushReplacement(
                                 context,
                                 MaterialPageRoute(
-<<<<<<< HEAD
                                   builder: (context) => LoginPage(),
-=======
-                                  builder: (context) => const LoginPage(),
->>>>>>> c7a6ac4072d82b4a9348628300196ac711091cc4
                                 ),
                               )
                             });
@@ -197,7 +169,6 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                         fontWeight: FontWeight.bold)),
               ),
             ),
-
             const SizedBox(height: 20),
             TextButton(
               onPressed: () {
@@ -255,20 +226,9 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
   }
 
   Widget _buildDropdown({
-<<<<<<< HEAD
     required String label,
   }) {
     return Container(
-=======
-    required TextEditingController controller,
-    required String label,
-    required bool obscureText,
-    Widget? suffixIcon,
-  }) {
-    return Container(
-      width: double.infinity,
-      height: 60,
->>>>>>> c7a6ac4072d82b4a9348628300196ac711091cc4
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(12.0), // Yuvarlak köşeler

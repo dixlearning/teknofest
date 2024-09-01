@@ -75,13 +75,9 @@ flutter:
     - assets/images/secenekli_oyun_img/
     - assets/images/disleksi2_img/
     - assets/images/giris_ekrani_img/
-<<<<<<< HEAD
     - assets/images/Icons/
     - assets/images/Thumbnails/
 
-=======
-    - assets/images/
->>>>>>> c7a6ac4072d82b4a9348628300196ac711091cc4
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images
 

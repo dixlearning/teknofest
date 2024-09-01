@@ -54,13 +54,8 @@ class ProfilePageState extends State<ProfilePage> {
                   ),
                   GestureDetector(
                     child: Image.asset(userData!.Gender! == 1
-<<<<<<< HEAD
                         ? "assets/images/Icons/male.png"
                         : "assets/images/Icons/female.png"),
-=======
-                        ? "assets/images/male.png"
-                        : "assets/images/female.png"),
->>>>>>> c7a6ac4072d82b4a9348628300196ac711091cc4
                   )
                 ],
               ),
