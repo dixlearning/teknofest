@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:teknofest/giris_sorulari/mat_hesaplama.dart';
 import 'package:teknofest/other_functions/game_manager.dart'; // Matematik oyunu ekranını import et
 
+// ignore: must_be_immutable
 class DiskalkuliEgitimPage extends StatefulWidget {
   final VoidCallback? onComplete; // Callback fonksiyonu için gerekli
 
@@ -24,7 +24,7 @@ class DiskalkuliEgitimPageState extends State<DiskalkuliEgitimPage> {
   final List<String> _answers =
       List.generate(8, (index) => ''); // Doğru cevapları saklamak için
 
-  bool _showNextQuestionButton = false; // Sıradaki Soru butonunu göstermek için
+// Sıradaki Soru butonunu göstermek için
   GameManager _gameManager = GameManager();
   void _handleGameEnd() async {
     if (widget.onComplete != null) {
@@ -61,7 +61,7 @@ class DiskalkuliEgitimPageState extends State<DiskalkuliEgitimPage> {
     await _gameManager.setGame(context, question);
 
     setState(() {
-      _showNextQuestionButton = !allCorrect; // Sıradaki Soru butonunu göster
+// Sıradaki Soru butonunu göster
     });
 
     _handleGameEnd();

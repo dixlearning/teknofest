@@ -40,7 +40,7 @@ class DashboardWidget extends State<StatefulWidget> {
     QuesionToCategory(id: 20, route: "Disleksi Soru 2", category: 2),
     QuesionToCategory(id: 21, route: "Disleksi Soru 3", category: 2),
     QuesionToCategory(id: 22, route: "Disleksi Soru 4", category: 2),
-    QuesionToCategory(id: 23, route: "Metin Takibi 1", category: 3),
+    QuesionToCategory(id: 23, route: "Okuma Zamanı", category: 3),
   ];
   late UserRequest? userData;
   bool _isLoading = false;
