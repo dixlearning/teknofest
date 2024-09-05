@@ -22,7 +22,7 @@ class EtkinlikSorulariListScreen extends StatelessWidget {
     'Disleksi Soru 2',
     'Disleksi Soru 3',
     'Disleksi Soru 4',
-    'Metin Takibi 1'
+    'Okuma Zamanı'
   ];
 
   @override

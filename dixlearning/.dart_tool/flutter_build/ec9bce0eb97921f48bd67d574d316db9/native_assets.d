@@ -1,0 +1,1 @@
+ C:\\Users\\iremb\\Downloads\\dixlearning\\dixlearning\\.dart_tool\\flutter_build\\ec9bce0eb97921f48bd67d574d316db9\\native_assets.yaml: 
